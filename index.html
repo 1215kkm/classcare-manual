@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클래스케어 모바일 가이드</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #F5F5F5;
+      font-family: -apple-system, 'Malgun Gothic', '맑은 고딕', sans-serif;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* 헤더 */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 20px 0;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: #D53A6B;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+    }
+
+    /* 탭 네비게이션 */
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: #D53A6B;
+      color: #fff;
+    }
+
+    .tab-btn:not(.active):hover {
+      background: #f0f0f0;
+    }
+
+    /* 탭 콘텐츠 */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 카드 */
+    .card {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      align-items: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .card-number {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 24px;
+      height: 24px;
+      background: #D53A6B;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-image {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .card-image img {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+    }
+
+    /* 플레이스홀더 이미지 */
+    .placeholder-img {
+      width: 120px;
+      height: 90px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 24px;
+    }
+
+    .card.student .placeholder-img {
+      background: linear-gradient(135deg, #4550C8 0%, #667eea 100%);
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card-content h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .card-content .highlight {
+      color: #D53A6B;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .card.student .card-content .highlight {
+      color: #4550C8;
+    }
+
+    .card-content p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* 섹션 구분 */
+    .section-divider {
+      text-align: center;
+      margin: 32px 0 24px;
+      color: #aaa;
+      font-size: 12px;
+      position: relative;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: #ddd;
+    }
+
+    .section-divider::before { left: 0; }
+    .section-divider::after { right: 0; }
+
+    /* 푸터 */
+    .footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: #D53A6B;
+      text-decoration: none;
+    }
+
+    /* 모바일 반응형 */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .card-image {
+        width: 100%;
+      }
+
+      .card-image img,
+      .placeholder-img {
+        width: 100%;
+        height: 160px;
+      }
+
+      .card-number {
+        top: 12px;
+        left: 12px;
+      }
+    }
+
+    /* 아이콘 이모지 스타일 */
+    .icon-emoji {
+      font-size: 32px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header">
+      <div class="logo">ClassCare</div>
+      <p class="subtitle">모바일 가이드</p>
+    </header>
+
+    <!-- 탭 네비게이션 -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="teacher">선생님용</button>
+      <button class="tab-btn" data-tab="student">학생용</button>
+    </nav>
+
+    <!-- 선생님용 가이드 -->
+    <section class="tab-content active" id="teacher">
+
+      <!-- 1. 시작하기 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🚀</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"30초면 수업 준비 끝"</span>
+          <h3>시작하기</h3>
+          <p>프로그램 실행 → 서버 시작 → 학생들이 접속하면 끝! 복잡한 설정 없이 바로 시작하세요.</p>
+        </div>
+      </article>
+
+      <!-- 2. 반 만들기 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🏠</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"우리반 전용 공간을 만들어요"</span>
+          <h3>반 만들기</h3>
+          <p>반 이름만 입력하면 나만의 수업 공간 완성. 여러 반도 한 번에 관리할 수 있어요.</p>
+        </div>
+      </article>
+
+      <!-- 3. 좌석 배치 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🪑</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"실제 교실처럼, 한눈에 파악"</span>
+          <h3>좌석 배치</h3>
+          <p>드래그로 자리 배치, 누가 접속했는지 실시간 확인. 학생 선택도 클릭 한 번이면 OK.</p>
+        </div>
+      </article>
+
+      <!-- 4. 자료 전송 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">📤</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"클릭 한 번으로 전체 배포"</span>
+          <h3>자료 전송</h3>
+          <p>파일을 끌어다 놓으면 선택한 학생에게 바로 전달. 피드백 요청도 함께 보낼 수 있어요.</p>
+        </div>
+      </article>
+
+      <!-- 5. 퀴즈 & 시험 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">📝</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"실시간 제출 현황, 놓치지 마세요"</span>
+          <h3>퀴즈 & 시험</h3>
+          <p>시간제한 설정 가능, 제출 현황 실시간 확인. 퀴즈 시작/정지/종료 완벽 컨트롤.</p>
+        </div>
+      </article>
+
+      <!-- 6. 학생에게 메시지 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">💬</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"조용히, 개별적으로 전달"</span>
+          <h3>학생에게 메시지</h3>
+          <p>수업 중 방해 없이 특정 학생에게만 메시지. 칭찬도, 주의도 은밀하게.</p>
+        </div>
+      </article>
+
+      <!-- 7. 화면 모니터링 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">👀</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"수업 집중도를 한눈에"</span>
+          <h3>화면 모니터링</h3>
+          <p>학생 화면을 실시간으로 확인. 집중 알림으로 수업 분위기 유지.</p>
+        </div>
+      </article>
+
+      <!-- 8. 트레이 모드 -->
+      <article class="card">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🔽</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"항상 대기, 필요할 때만 나타나요"</span>
+          <h3>트레이 모드</h3>
+          <p>작업표시줄 대신 트레이에 숨김. 클릭 한 번으로 언제든 복귀.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- 학생용 가이드 -->
+    <section class="tab-content" id="student">
+
+      <!-- 1. 선생님 연결 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🔗</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"IP만 입력하면 바로 연결"</span>
+          <h3>선생님 연결</h3>
+          <p>선생님이 알려준 IP 입력하고 연결 버튼 클릭. 자동 시작 설정하면 컴퓨터 켤 때 자동 연결!</p>
+        </div>
+      </article>
+
+      <!-- 2. 반 입장 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">🚪</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"내 자리를 찾아서"</span>
+          <h3>반 입장</h3>
+          <p>선생님이 만든 반에 입장. 내 이름이 적힌 자리를 확인하세요.</p>
+        </div>
+      </article>
+
+      <!-- 3. 자료 받기 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">📥</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"선생님이 보낸 자료, 자동 정리"</span>
+          <h3>자료 받기</h3>
+          <p>수업 자료가 오면 알림이 떠요. 자료/퀴즈/시험별로 폴더에 자동 저장.</p>
+        </div>
+      </article>
+
+      <!-- 4. 퀴즈 & 시험 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">⏱️</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"시간 내에 제출하세요"</span>
+          <h3>퀴즈 & 시험</h3>
+          <p>남은 시간 확인하면서 풀이. 완료하면 제출 버튼 클릭!</p>
+        </div>
+      </article>
+
+      <!-- 5. 피드백 확인 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">✅</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"선생님의 피드백을 바로 확인"</span>
+          <h3>피드백 확인</h3>
+          <p>선생님이 보낸 피드백 알림 수신. 내 과제에 대한 코멘트를 바로 확인.</p>
+        </div>
+      </article>
+
+      <!-- 6. 폴더 바로가기 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">📁</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"자료/퀴즈/시험 한 곳에"</span>
+          <h3>폴더 바로가기</h3>
+          <p>하단 링크로 각 폴더에 빠르게 접근. 지난 자료도 쉽게 찾아보세요.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+      <p>© 2024 ClassCare. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // 탭 전환 기능
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 버튼 활성화
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 콘텐츠 전환
+        const tabId = btn.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

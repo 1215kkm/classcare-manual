@@ -19,7 +19,7 @@
     }
 
     .container {
-      max-width: 480px;
+      max-width: 640px;
       margin: 0 auto;
     }
 
@@ -49,7 +49,7 @@
       margin-bottom: 20px;
       background: #fff;
       padding: 6px;
-      border-radius: 12px;
+      border-radius: 5px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
@@ -58,7 +58,7 @@
       padding: 12px 16px;
       border: none;
       background: transparent;
-      border-radius: 8px;
+      border-radius: 5px;
       font-size: 14px;
       font-weight: 600;
       color: #888;
@@ -84,13 +84,14 @@
       display: block;
     }
 
+
     /* 카드 */
     .card {
       display: flex;
-      gap: 16px;
+      gap: 25px;
       padding: 20px;
-      margin-bottom: 16px;
-      border-radius: 16px;
+      margin-bottom: 40px;
+      border-radius: 5px;
       background: #fff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       align-items: center;
@@ -127,7 +128,7 @@
       width: 120px;
       height: 90px;
       object-fit: cover;
-      border-radius: 12px;
+      border-radius: 5px;
       background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
     }
 
@@ -135,7 +136,7 @@
     .placeholder-img {
       width: 120px;
       height: 90px;
-      border-radius: 12px;
+      border-radius: 2px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
@@ -165,7 +166,7 @@
       font-size: 13px;
       font-weight: 600;
       margin-bottom: 6px;
-      display: block;
+      display: none;
     }
 
     .card.student .card-content .highlight {
@@ -173,10 +174,11 @@
     }
 
     .card-content p {
-      font-size: 13px;
+      font-size: 15px;
       color: #666;
       line-height: 1.6;
     }
+    .card-content p .ex {display: block; color: crimson; font-style: italic; font-size: 13px;}
 
     /* 섹션 구분 */
     .section-divider {
@@ -272,24 +274,12 @@
         <div class="card-content">
           <span class="highlight">"30초면 수업 준비 끝"</span>
           <h3>시작하기</h3>
-          <p>프로그램 실행 → 서버 시작 → 학생들이 접속하면 끝! 복잡한 설정 없이 바로 시작하세요.</p>
-        </div>
-      </article>
-
-      <!-- 2. 반 만들기 -->
-      <article class="card">
-        <div class="card-image">
-          <div class="placeholder-img"><span class="icon-emoji">🏠</span></div>
-        </div>
-        <div class="card-content">
-          <span class="highlight">"우리반 전용 공간을 만들어요"</span>
-          <h3>반 만들기</h3>
-          <p>반 이름만 입력하면 나만의 수업 공간 완성. 여러 반도 한 번에 관리할 수 있어요.</p>
+          <p>드래그로 자리 배치, 접속자 실시간 확인 <span class="ex">이름외우기 좋고 누가 안왔는지 바로 확인가능해요</span></p>
         </div>
       </article>
 
       <!-- 3. 좌석 배치 -->
-      <article class="card">
+      <!-- <article class="card">
         <div class="card-image">
           <div class="placeholder-img"><span class="icon-emoji">🪑</span></div>
         </div>
@@ -298,7 +288,7 @@
           <h3>좌석 배치</h3>
           <p>드래그로 자리 배치, 누가 접속했는지 실시간 확인. 학생 선택도 클릭 한 번이면 OK.</p>
         </div>
-      </article>
+      </article> -->
 
       <!-- 4. 자료 전송 -->
       <article class="card">
@@ -308,7 +298,7 @@
         <div class="card-content">
           <span class="highlight">"클릭 한 번으로 전체 배포"</span>
           <h3>자료 전송</h3>
-          <p>파일을 끌어다 놓으면 선택한 학생에게 바로 전달. 피드백 요청도 함께 보낼 수 있어요.</p>
+          <p>한명 또는 여러명의 학생을 선택하면 (파일,퀴즈,시험) 전송을 할수 있습니다. 파일주고받기 대박 편해요, <span class="ex">네트워크라서 용량제한 최소1기가, 글자수 제한없음</span></p>
         </div>
       </article>
 
@@ -320,7 +310,7 @@
         <div class="card-content">
           <span class="highlight">"실시간 제출 현황, 놓치지 마세요"</span>
           <h3>퀴즈 & 시험</h3>
-          <p>시간제한 설정 가능, 제출 현황 실시간 확인. 퀴즈 시작/정지/종료 완벽 컨트롤.</p>
+          <p>제출 현황 실시간 확인. 시작/정지/취소/종료 완벽 컨트롤. <span class="ex">시험파일 관리 쉽고, 안내거나 늦게낸 학생 파악 바로 됩니다.</span></p>
         </div>
       </article>
 
@@ -332,7 +322,8 @@
         <div class="card-content">
           <span class="highlight">"조용히, 개별적으로 전달"</span>
           <h3>학생에게 메시지</h3>
-          <p>수업 중 방해 없이 특정 학생에게만 메시지. 칭찬도, 주의도 은밀하게.</p>
+          <p>수업 중 방해 없이 특정 학생에게만 메시지나 이모티콘 가능 <span class="ex">이제 여러번말해도 안듣는 학생한테 말은 그만해도 되요</span>
+          <span class="ex">가볍게 메세지 전달이 수월해졌어요</span></p>
         </div>
       </article>
 
@@ -344,19 +335,31 @@
         <div class="card-content">
           <span class="highlight">"수업 집중도를 한눈에"</span>
           <h3>화면 모니터링</h3>
-          <p>학생 화면을 실시간으로 확인. 집중 알림으로 수업 분위기 유지.</p>
+          <p>학생 화면을 실시간으로 확인.제어하여 수업흐름을 끊지않고, 학생케어가 가능<span class="ex">집중관심 학생은 실시간 케어가 가능합니다</span></p>
         </div>
       </article>
 
-      <!-- 8. 트레이 모드 -->
+      <!-- 8. 쉬는시간 및 출석부 -->
       <article class="card">
         <div class="card-image">
-          <div class="placeholder-img"><span class="icon-emoji">🔽</span></div>
+          <div class="placeholder-img"><span class="icon-emoji">🏠</span></div>
         </div>
         <div class="card-content">
-          <span class="highlight">"항상 대기, 필요할 때만 나타나요"</span>
-          <h3>트레이 모드</h3>
-          <p>작업표시줄 대신 트레이에 숨김. 클릭 한 번으로 언제든 복귀.</p>
+          <span class="highlight">"우리반 전용 공간을 만들어요"</span>
+          <h3>쉬는시간 및 출석부</h3>
+          <p>수업시간 설정하면 쉬는시간에 종소리와 출석부의 지각,조퇴 등이 자동기재<span class="ex">출석부는 선생님 업무일지 쓸때 참고용이에요</span></p>
+        </div>
+      </article>
+
+      <!-- 9. 공유메모 -->
+      <article class="card student">
+        <div class="card-image">
+          <div class="placeholder-img"><span class="icon-emoji">📁</span></div>
+        </div>
+        <div class="card-content">
+          <span class="highlight">"자료/퀴즈/시험 한 곳에"</span>
+          <h3>공지기능과 메모공유</h3>
+          <p>필요할때, 늦게오는 학생에게 까먹지 않고 공지할수 있어요<span class="ex">학생들이 잘 까먹는것들을 인지시킬수 있어요</span></p>
         </div>
       </article>
 
@@ -372,20 +375,20 @@
         </div>
         <div class="card-content">
           <span class="highlight">"IP만 입력하면 바로 연결"</span>
-          <h3>선생님 연결</h3>
-          <p>선생님이 알려준 IP 입력하고 연결 버튼 클릭. 자동 시작 설정하면 컴퓨터 켤 때 자동 연결!</p>
+          <h3>선생님 연결 및 반입장</h3>
+          <p>선생님이 로그인하시면 자동 연결!</p>
         </div>
       </article>
 
-      <!-- 2. 반 입장 -->
+      <!-- 3. 반 입장 -->
       <article class="card student">
         <div class="card-image">
           <div class="placeholder-img"><span class="icon-emoji">🚪</span></div>
         </div>
         <div class="card-content">
           <span class="highlight">"내 자리를 찾아서"</span>
-          <h3>반 입장</h3>
-          <p>선생님이 만든 반에 입장. 내 이름이 적힌 자리를 확인하세요.</p>
+          <h3>공지기능과 메모공유, 개인메모</h3>
+          <p>우리반 공지사항과 선생님이 알려주신 메모를 항상 볼수 있고 따로 개인메모도 분류별 가능</p>
         </div>
       </article>
 
@@ -396,8 +399,8 @@
         </div>
         <div class="card-content">
           <span class="highlight">"선생님이 보낸 자료, 자동 정리"</span>
-          <h3>자료 받기</h3>
-          <p>수업 자료가 오면 알림이 떠요. 자료/퀴즈/시험별로 폴더에 자동 저장.</p>
+          <h3>자료 전송</h3>
+          <p>선생님께서 자료를 보내주시면 자료/퀴즈/시험별로 폴더에 자동 저장되며, 선생님께 자료를 보내드릴 수도 있습니다.</p>
         </div>
       </article>
 
@@ -409,7 +412,7 @@
         <div class="card-content">
           <span class="highlight">"시간 내에 제출하세요"</span>
           <h3>퀴즈 & 시험</h3>
-          <p>남은 시간 확인하면서 풀이. 완료하면 제출 버튼 클릭!</p>
+          <p>남은 시간 확인하면서 풀이. 사정으로 제출하지 못했던 시험 확인</p>
         </div>
       </article>
 
@@ -421,7 +424,7 @@
         <div class="card-content">
           <span class="highlight">"선생님의 피드백을 바로 확인"</span>
           <h3>피드백 확인</h3>
-          <p>선생님이 보낸 피드백 알림 수신. 내 과제에 대한 코멘트를 바로 확인.</p>
+          <p>선생님이 보내주신 피드백들은 피드백내용과 파일이 함께 저장됩니다.</p>
         </div>
       </article>
 
@@ -432,7 +435,7 @@
         </div>
         <div class="card-content">
           <span class="highlight">"자료/퀴즈/시험 한 곳에"</span>
-          <h3>폴더 바로가기</h3>
+          <h3>폴더&파일 관리</h3>
           <p>하단 링크로 각 폴더에 빠르게 접근. 지난 자료도 쉽게 찾아보세요.</p>
         </div>
       </article>

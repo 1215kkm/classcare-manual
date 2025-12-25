@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#F2F4F6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>더보기 - ClassCare</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6] min-h-screen safe-top">
+
+  <!-- Header -->
+  <header class="app-header safe-top">
+    <h1 class="text-xl font-bold text-gray-900">더보기</h1>
+  </header>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <!-- User Profile Card -->
+    <div class="card mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-xl font-bold" id="userAvatar">
+          김
+        </div>
+        <div class="flex-1">
+          <h2 class="text-lg font-bold text-gray-900" id="userName">김선생</h2>
+          <p class="text-sm text-gray-500" id="userEmail">teacher@academy.com</p>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="badge badge-purple">강사</span>
+            <span class="text-xs text-gray-400" id="academyName">스마트코딩학원</span>
+          </div>
+        </div>
+        <button class="p-2 rounded-lg hover:bg-gray-100">
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Subscription Status -->
+    <div class="card mb-6 bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <p class="text-purple-100 text-sm">현재 플랜</p>
+          <p class="text-xl font-bold">유료 플랜</p>
+        </div>
+        <span class="px-3 py-1 bg-white/20 rounded-full text-sm font-medium">활성</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-purple-100">다음 결제일</span>
+        <span class="font-medium">2025년 1월 21일</span>
+      </div>
+      <button class="w-full mt-4 py-2 bg-white/20 rounded-xl text-sm font-medium hover:bg-white/30 transition">
+        구독 관리
+      </button>
+    </div>
+
+    <!-- Menu List -->
+    <section class="mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">계정</h3>
+      <div class="card p-0 overflow-hidden">
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="user" class="w-5 h-5 text-blue-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">프로필 설정</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="credit-card" class="w-5 h-5 text-green-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">결제 정보</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="receipt" class="w-5 h-5 text-purple-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">결제 내역</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">설정</h3>
+      <div class="card p-0 overflow-hidden">
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="bell" class="w-5 h-5 text-orange-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">알림 설정</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <div class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="moon" class="w-5 h-5 text-gray-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">다크 모드</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="darkModeToggle" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+          </label>
+        </div>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="globe" class="w-5 h-5 text-cyan-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">언어</span>
+          <span class="text-gray-500 text-sm mr-2">한국어</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-6">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">지원</h3>
+      <div class="card p-0 overflow-hidden">
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="help-circle" class="w-5 h-5 text-indigo-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">고객센터</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="message-square" class="w-5 h-5 text-pink-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">문의하기</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="file-text" class="w-5 h-5 text-teal-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">이용약관</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+        <a href="#" class="list-item hover:bg-gray-50">
+          <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mr-3">
+            <i data-lucide="shield" class="w-5 h-5 text-emerald-600"></i>
+          </div>
+          <span class="flex-1 text-gray-900 font-medium">개인정보처리방침</span>
+          <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Logout Button -->
+    <button id="logoutBtn" class="w-full py-3 text-red-500 font-medium rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 transition mb-4">
+      로그아웃
+    </button>
+
+    <!-- App Version -->
+    <p class="text-center text-xs text-gray-400 mb-4">
+      ClassCare v1.0.0<br>
+      © 2024 ClassCare. All rights reserved.
+    </p>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav id="bottomNav" class="bottom-nav safe-bottom"></nav>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Check authentication
+    if (!isAuthenticated()) {
+      window.location.href = 'login.html';
+    }
+
+    // Load user info
+    const user = getCurrentUser();
+    if (user) {
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userAvatar').textContent = getInitials(user.name);
+      if (user.academy) {
+        document.getElementById('academyName').textContent = user.academy;
+      }
+    }
+
+    // Dark mode toggle
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+      if (this.checked) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('classcare_theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('classcare_theme', 'light');
+      }
+    });
+
+    // Check saved theme
+    if (localStorage.getItem('classcare_theme') === 'dark') {
+      document.getElementById('darkModeToggle').checked = true;
+      document.documentElement.classList.add('dark');
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('정말 로그아웃 하시겠습니까?')) {
+        logout();
+      }
+    });
+
+    // Render bottom navigation
+    renderBottomNav('more');
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

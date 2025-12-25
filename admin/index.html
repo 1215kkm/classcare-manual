@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대시보드 - ClassCare 슈퍼어드민</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#D53A6B', secondary: '#3B7DD6' },
+            accent: { primary: '#8A38F5', secondary: '#3B67F6' },
+            dark: { primary: '#1B1D21', secondary: '#1A1C22', tertiary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6]">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-dark-primary border-r border-gray-800 transition-all duration-300 z-40 w-64"></aside>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="transition-all duration-300 lg:ml-64">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">대시보드</h1>
+        <p class="text-gray-500 mt-1">ClassCare 서비스 운영 현황을 한눈에 확인하세요.</p>
+      </div>
+
+      <!-- Stats Grid - 슈퍼어드민용 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        <!-- 전체 학원 -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center">
+              <i data-lucide="building-2" class="w-5 h-5 text-blue-600"></i>
+            </div>
+            <div class="flex items-center space-x-1 text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+              <span>+3</span>
+            </div>
+          </div>
+          <p class="text-3xl font-bold text-gray-900">24</p>
+          <p class="text-gray-500 text-sm mt-1 font-medium">전체 학원</p>
+        </div>
+
+        <!-- 전체 강사 -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center">
+              <i data-lucide="users" class="w-5 h-5 text-purple-600"></i>
+            </div>
+            <div class="flex items-center space-x-1 text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+              <span>+12</span>
+            </div>
+          </div>
+          <p class="text-3xl font-bold text-gray-900">156</p>
+          <p class="text-gray-500 text-sm mt-1 font-medium">전체 강사</p>
+        </div>
+
+        <!-- 활성 구독 -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+            </div>
+            <div class="flex items-center space-x-1 text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+              <span>+5</span>
+            </div>
+          </div>
+          <p class="text-3xl font-bold text-gray-900">89</p>
+          <p class="text-gray-500 text-sm mt-1 font-medium">활성 구독</p>
+        </div>
+
+        <!-- 이번 달 매출 -->
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-11 h-11 rounded-xl bg-pink-50 flex items-center justify-center">
+              <i data-lucide="wallet" class="w-5 h-5 text-pink-600"></i>
+            </div>
+            <div class="flex items-center space-x-1 text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+              <span>+18%</span>
+            </div>
+          </div>
+          <p class="text-3xl font-bold text-gray-900">2,450<span class="text-lg">만원</span></p>
+          <p class="text-gray-500 text-sm mt-1 font-medium">이번 달 매출</p>
+        </div>
+      </div>
+
+      <!-- 구독 현황 바 -->
+      <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-900">구독 현황</h2>
+          <a href="payments.html" class="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
+            상세보기 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+        <div class="flex gap-4 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="text-sm text-gray-600">활성 <strong class="text-gray-900">89</strong></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <span class="text-sm text-gray-600">만료예정 <strong class="text-gray-900">12</strong></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <span class="text-sm text-gray-600">미결제 <strong class="text-gray-900">5</strong></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+            <span class="text-sm text-gray-600">체험중 <strong class="text-gray-900">8</strong></span>
+          </div>
+        </div>
+        <div class="h-4 bg-gray-100 rounded-full overflow-hidden flex">
+          <div class="bg-green-500 h-full" style="width: 78%"></div>
+          <div class="bg-yellow-500 h-full" style="width: 10%"></div>
+          <div class="bg-red-500 h-full" style="width: 5%"></div>
+          <div class="bg-gray-300 h-full" style="width: 7%"></div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="grid lg:grid-cols-3 gap-6 mb-6">
+        <!-- 학원별 사용량 TOP 5 -->
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="p-5 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-gray-900">학원별 사용량 TOP 5</h2>
+            <a href="usage.html" class="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
+              전체보기 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+          <div class="divide-y divide-gray-100">
+            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm mr-4">1</div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">서울디자인학원</p>
+                <p class="text-sm text-gray-500">강사 8명 · 학생 245명</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900">1,523</p>
+                <p class="text-xs text-gray-500">이번 달 이용</p>
+              </div>
+            </div>
+            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white font-bold text-sm mr-4">2</div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">강남코딩스쿨</p>
+                <p class="text-sm text-gray-500">강사 5명 · 학생 180명</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900">1,287</p>
+                <p class="text-xs text-gray-500">이번 달 이용</p>
+              </div>
+            </div>
+            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-sm mr-4">3</div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">인천아트센터</p>
+                <p class="text-sm text-gray-500">강사 12명 · 학생 320명</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900">1,156</p>
+                <p class="text-xs text-gray-500">이번 달 이용</p>
+              </div>
+            </div>
+            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-sm mr-4">4</div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">부산코딩학원</p>
+                <p class="text-sm text-gray-500">강사 6명 · 학생 156명</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900">982</p>
+                <p class="text-xs text-gray-500">이번 달 이용</p>
+              </div>
+            </div>
+            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+              <div class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-sm mr-4">5</div>
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">대전디자인스쿨</p>
+                <p class="text-sm text-gray-500">강사 4명 · 학생 98명</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-gray-900">756</p>
+                <p class="text-xs text-gray-500">이번 달 이용</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 알림 & 최근 가입 -->
+        <div class="space-y-6">
+          <!-- 주의 필요 -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-gray-100">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-orange-500"></i>
+                주의 필요
+              </h2>
+            </div>
+            <div class="divide-y divide-gray-100">
+              <div class="p-4 flex items-center gap-3 hover:bg-red-50 transition cursor-pointer">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="flex-1">
+                  <p class="font-medium text-gray-900 text-sm">미결제 학원 5곳</p>
+                  <p class="text-xs text-gray-500">7일 이상 결제 지연</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+              </div>
+              <div class="p-4 flex items-center gap-3 hover:bg-yellow-50 transition cursor-pointer">
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="flex-1">
+                  <p class="font-medium text-gray-900 text-sm">구독 만료 예정 12곳</p>
+                  <p class="text-xs text-gray-500">7일 이내 만료</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+              </div>
+              <div class="p-4 flex items-center gap-3 hover:bg-blue-50 transition cursor-pointer">
+                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div class="flex-1">
+                  <p class="font-medium text-gray-900 text-sm">체험 종료 예정 3곳</p>
+                  <p class="text-xs text-gray-500">3일 이내 종료</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 최근 가입 -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-gray-100">
+              <h2 class="text-lg font-bold text-gray-900">최근 가입</h2>
+            </div>
+            <div class="divide-y divide-gray-100">
+              <div class="p-4">
+                <div class="flex items-center justify-between mb-1">
+                  <p class="font-semibold text-gray-900">서울디자인학원</p>
+                  <span class="px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-700 rounded-full">활성</span>
+                </div>
+                <p class="text-sm text-gray-500">원장: 김원장 · 강사 8명</p>
+                <p class="text-xs text-gray-400 mt-1">10분 전 가입</p>
+              </div>
+              <div class="p-4">
+                <div class="flex items-center justify-between mb-1">
+                  <p class="font-semibold text-gray-900">강남코딩스쿨</p>
+                  <span class="px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">체험중</span>
+                </div>
+                <p class="text-sm text-gray-500">원장: 이원장 · 강사 5명</p>
+                <p class="text-xs text-gray-400 mt-1">2시간 전 가입</p>
+              </div>
+              <div class="p-4">
+                <div class="flex items-center justify-between mb-1">
+                  <p class="font-semibold text-gray-900">인천아트센터</p>
+                  <span class="px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-700 rounded-full">활성</span>
+                </div>
+                <p class="text-sm text-gray-500">원장: 박원장 · 강사 12명</p>
+                <p class="text-xs text-gray-400 mt-1">어제 가입</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 빠른 작업 -->
+      <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-6 text-white shadow-lg">
+        <h2 class="text-lg font-bold mb-4">빠른 작업</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <a href="academies.html" class="bg-white/15 hover:bg-white/25 backdrop-blur transition rounded-xl p-4 text-center border border-white/20">
+            <i data-lucide="building-2" class="w-6 h-6 mx-auto mb-2"></i>
+            <span class="text-sm font-medium">학원 관리</span>
+          </a>
+          <a href="payments.html" class="bg-white/15 hover:bg-white/25 backdrop-blur transition rounded-xl p-4 text-center border border-white/20">
+            <i data-lucide="credit-card" class="w-6 h-6 mx-auto mb-2"></i>
+            <span class="text-sm font-medium">결제 관리</span>
+          </a>
+          <a href="usage.html" class="bg-white/15 hover:bg-white/25 backdrop-blur transition rounded-xl p-4 text-center border border-white/20">
+            <i data-lucide="bar-chart-3" class="w-6 h-6 mx-auto mb-2"></i>
+            <span class="text-sm font-medium">사용량 분석</span>
+          </a>
+          <a href="plans.html" class="bg-white/15 hover:bg-white/25 backdrop-blur transition rounded-xl p-4 text-center border border-white/20">
+            <i data-lucide="package" class="w-6 h-6 mx-auto mb-2"></i>
+            <span class="text-sm font-medium">플랜 설정</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/admin-common.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

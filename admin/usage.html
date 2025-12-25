@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사용량 분석 - ClassCare 슈퍼어드민</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#D53A6B', secondary: '#3B7DD6' },
+            accent: { primary: '#8A38F5', secondary: '#3B67F6' },
+            dark: { primary: '#1B1D21', secondary: '#1A1C22', tertiary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6]">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-dark-primary border-r border-gray-800 transition-all duration-300 z-40 w-64"></aside>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="transition-all duration-300 lg:ml-64">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Title -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">사용량 분석</h1>
+          <p class="text-gray-500 mt-1">기능별, 학원별 서비스 사용량을 분석합니다.</p>
+        </div>
+        <div class="flex gap-2">
+          <select class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 font-medium">
+            <option>이번 달</option>
+            <option>지난 달</option>
+            <option>최근 3개월</option>
+            <option>올해</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <i data-lucide="activity" class="w-5 h-5 text-blue-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-gray-900">45,672</p>
+          <p class="text-sm text-gray-500 mt-1">총 이용 횟수</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+              <i data-lucide="users" class="w-5 h-5 text-purple-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-gray-900">156</p>
+          <p class="text-sm text-gray-500 mt-1">활성 강사</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-green-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-gray-900">3,842</p>
+          <p class="text-sm text-gray-500 mt-1">활성 학생</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
+              <i data-lucide="trending-up" class="w-5 h-5 text-orange-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-gray-900">+23%</p>
+          <p class="text-sm text-gray-500 mt-1">전월 대비</p>
+        </div>
+      </div>
+
+      <!-- Feature Usage -->
+      <div class="grid lg:grid-cols-2 gap-6 mb-6">
+        <!-- 기능별 사용량 -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="p-5 border-b border-gray-100">
+            <h2 class="text-lg font-bold text-gray-900">기능별 사용량</h2>
+            <p class="text-sm text-gray-500 mt-1">어떤 기능이 가장 많이 사용되는지 확인합니다.</p>
+          </div>
+          <div class="p-5 space-y-4">
+            <!-- 출석 체크 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                    <i data-lucide="user-check" class="w-4 h-4 text-green-600"></i>
+                  </div>
+                  <span class="font-medium text-gray-900">출석 체크</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-900">18,234회</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-green-500 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            <!-- 퀴즈/시험 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <i data-lucide="file-question" class="w-4 h-4 text-blue-600"></i>
+                  </div>
+                  <span class="font-medium text-gray-900">퀴즈/시험</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-900">12,567회</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-blue-500 rounded-full" style="width: 65%"></div>
+              </div>
+            </div>
+            <!-- 상담 기록 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <i data-lucide="message-square" class="w-4 h-4 text-purple-600"></i>
+                  </div>
+                  <span class="font-medium text-gray-900">상담 기록</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-900">8,432회</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-purple-500 rounded-full" style="width: 45%"></div>
+              </div>
+            </div>
+            <!-- 좌석 배치 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                    <i data-lucide="layout" class="w-4 h-4 text-orange-600"></i>
+                  </div>
+                  <span class="font-medium text-gray-900">좌석 배치</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-900">4,521회</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-orange-500 rounded-full" style="width: 28%"></div>
+              </div>
+            </div>
+            <!-- 피드백 -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
+                    <i data-lucide="send" class="w-4 h-4 text-pink-600"></i>
+                  </div>
+                  <span class="font-medium text-gray-900">피드백 전송</span>
+                </div>
+                <span class="text-sm font-semibold text-gray-900">1,918회</span>
+              </div>
+              <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-pink-500 rounded-full" style="width: 12%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 플랜별 분포 -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="p-5 border-b border-gray-100">
+            <h2 class="text-lg font-bold text-gray-900">플랜별 분포</h2>
+            <p class="text-sm text-gray-500 mt-1">각 플랜의 학원 수와 매출 비중</p>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-center mb-6">
+              <!-- 간단한 도넛 차트 시각화 -->
+              <div class="relative w-40 h-40">
+                <svg viewBox="0 0 36 36" class="w-full h-full">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E5E7EB" stroke-width="3.8"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#8B5CF6" stroke-width="3.8" stroke-dasharray="45 55" stroke-dashoffset="25"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#EC4899" stroke-width="3.8" stroke-dasharray="30 70" stroke-dashoffset="80"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#6B7280" stroke-width="3.8" stroke-dasharray="25 75" stroke-dashoffset="110"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span class="text-2xl font-bold text-gray-900">24</span>
+                  <span class="text-xs text-gray-500">학원</span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                  <span class="font-medium text-gray-900">Pro</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold text-gray-900">11</span>
+                  <span class="text-sm text-gray-500 ml-1">학원 (45%)</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-pink-500"></div>
+                  <span class="font-medium text-gray-900">Enterprise</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold text-gray-900">7</span>
+                  <span class="text-sm text-gray-500 ml-1">학원 (30%)</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-gray-400"></div>
+                  <span class="font-medium text-gray-900">Basic</span>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold text-gray-900">6</span>
+                  <span class="text-sm text-gray-500 ml-1">학원 (25%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Academy Usage Ranking -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900">학원별 사용량 순위</h2>
+            <p class="text-sm text-gray-500 mt-1">이번 달 기준</p>
+          </div>
+          <button class="px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 font-medium hover:bg-gray-100 transition">
+            전체 내보내기
+          </button>
+        </div>
+
+        <!-- Table Header -->
+        <div class="hidden lg:grid lg:grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-600">
+          <div class="col-span-1">순위</div>
+          <div class="col-span-3">학원</div>
+          <div class="col-span-2">강사/학생</div>
+          <div class="col-span-2">총 이용</div>
+          <div class="col-span-2">출석</div>
+          <div class="col-span-2">퀴즈/시험</div>
+        </div>
+
+        <div id="usageList" class="divide-y divide-gray-100">
+          <!-- JS로 삽입 -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/admin-common.js"></script>
+  <script>
+    // 사용량 데이터
+    const usageData = [
+      { rank: 1, academy: '울산코딩캠프', owner: '임원장', instructors: 15, students: 420, total: 2341, attendance: 1200, quiz: 856 },
+      { rank: 2, academy: '서울디자인학원', owner: '김원장', instructors: 8, students: 245, total: 1523, attendance: 823, quiz: 456 },
+      { rank: 3, academy: '강남코딩스쿨', owner: '이원장', instructors: 5, students: 180, total: 1287, attendance: 654, quiz: 398 },
+      { rank: 4, academy: '인천아트센터', owner: '박원장', instructors: 12, students: 320, total: 1156, attendance: 589, quiz: 321 },
+      { rank: 5, academy: '부산코딩학원', owner: '최원장', instructors: 6, students: 156, total: 982, attendance: 512, quiz: 287 },
+      { rank: 6, academy: '대전디자인스쿨', owner: '정원장', instructors: 4, students: 98, total: 756, attendance: 398, quiz: 198 },
+      { rank: 7, academy: '광주IT학원', owner: '한원장', instructors: 7, students: 189, total: 634, attendance: 324, quiz: 187 },
+    ];
+
+    // 순위 배지
+    function getRankBadge(rank) {
+      if (rank === 1) return '<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm">1</div>';
+      if (rank === 2) return '<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white font-bold text-sm">2</div>';
+      if (rank === 3) return '<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-300 to-orange-400 flex items-center justify-center text-white font-bold text-sm">3</div>';
+      return `<div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-sm">${rank}</div>`;
+    }
+
+    // 목록 렌더링
+    function renderUsageList() {
+      const list = document.getElementById('usageList');
+      list.innerHTML = usageData.map(u => `
+        <div class="p-4 hover:bg-gray-50 transition">
+          <div class="lg:grid lg:grid-cols-12 lg:gap-4 lg:items-center">
+            <div class="col-span-1 mb-2 lg:mb-0">
+              ${getRankBadge(u.rank)}
+            </div>
+            <div class="col-span-3 mb-2 lg:mb-0">
+              <p class="font-semibold text-gray-900">${u.academy}</p>
+              <p class="text-sm text-gray-500">${u.owner}</p>
+            </div>
+            <div class="col-span-2 mb-2 lg:mb-0">
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-purple-600 font-medium">${u.instructors}명</span>
+                <span class="text-gray-300">/</span>
+                <span class="text-sm text-blue-600 font-medium">${u.students}명</span>
+              </div>
+            </div>
+            <div class="col-span-2 mb-2 lg:mb-0">
+              <p class="font-bold text-gray-900">${formatNumber(u.total)}</p>
+            </div>
+            <div class="col-span-2 mb-2 lg:mb-0">
+              <p class="text-sm text-gray-700">${formatNumber(u.attendance)}</p>
+            </div>
+            <div class="col-span-2">
+              <p class="text-sm text-gray-700">${formatNumber(u.quiz)}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', function() {
+      renderUsageList();
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

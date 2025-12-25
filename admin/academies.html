@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학원 관리 - ClassCare 슈퍼어드민</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#D53A6B', secondary: '#3B7DD6' },
+            accent: { primary: '#8A38F5', secondary: '#3B67F6' },
+            dark: { primary: '#1B1D21', secondary: '#1A1C22', tertiary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6]">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-dark-primary border-r border-gray-800 transition-all duration-300 z-40 w-64"></aside>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="transition-all duration-300 lg:ml-64">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Title -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">학원 관리</h1>
+          <p class="text-gray-500 mt-1">등록된 학원을 관리하고 현황을 확인합니다.</p>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm cursor-pointer hover:border-gray-300 transition" onclick="filterAcademies('all')">
+          <p class="text-2xl font-bold text-gray-900">24</p>
+          <p class="text-sm text-gray-500">전체 학원</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm cursor-pointer hover:border-green-300 transition" onclick="filterAcademies('active')">
+          <p class="text-2xl font-bold text-green-600">15</p>
+          <p class="text-sm text-gray-500">활성 구독</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm cursor-pointer hover:border-yellow-300 transition" onclick="filterAcademies('trial')">
+          <p class="text-2xl font-bold text-yellow-600">4</p>
+          <p class="text-sm text-gray-500">체험중</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm cursor-pointer hover:border-orange-300 transition" onclick="filterAcademies('expiring')">
+          <p class="text-2xl font-bold text-orange-600">3</p>
+          <p class="text-sm text-gray-500">만료 예정</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm cursor-pointer hover:border-red-300 transition" onclick="filterAcademies('unpaid')">
+          <p class="text-2xl font-bold text-red-600">2</p>
+          <p class="text-sm text-gray-500">미결제</p>
+        </div>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm mb-6">
+        <div class="p-4 flex flex-col sm:flex-row gap-4">
+          <div class="flex-1 flex items-center bg-gray-50 rounded-xl px-4 py-2.5 border border-gray-200 focus-within:border-purple-300 focus-within:bg-white transition">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 mr-3"></i>
+            <input type="text" id="searchInput" placeholder="학원명, 원장명으로 검색..." class="bg-transparent border-none outline-none text-sm w-full text-gray-700 placeholder-gray-400" oninput="searchAcademies()">
+          </div>
+          <div class="flex gap-2">
+            <select id="statusFilter" class="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-purple-300" onchange="filterAcademies(this.value)">
+              <option value="all">전체 상태</option>
+              <option value="active">활성</option>
+              <option value="trial">체험중</option>
+              <option value="expiring">만료 예정</option>
+              <option value="unpaid">미결제</option>
+              <option value="expired">만료됨</option>
+            </select>
+            <select id="planFilter" class="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-purple-300" onchange="filterByPlan(this.value)">
+              <option value="all">전체 플랜</option>
+              <option value="basic">Basic</option>
+              <option value="pro">Pro</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Academy List -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <!-- Table Header -->
+        <div class="hidden lg:grid lg:grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-600">
+          <div class="col-span-3">학원 정보</div>
+          <div class="col-span-2">플랜</div>
+          <div class="col-span-2">강사/학생</div>
+          <div class="col-span-2">이번 달 이용</div>
+          <div class="col-span-2">상태</div>
+          <div class="col-span-1"></div>
+        </div>
+
+        <!-- Table Body -->
+        <div id="academyList" class="divide-y divide-gray-100">
+          <!-- 데이터가 JS로 삽입됨 -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Academy Detail Modal -->
+  <div id="academyModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="text-xl font-bold text-gray-900" id="modalTitle">학원 상세</h2>
+        <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+        </button>
+      </div>
+      <div id="modalContent" class="p-6">
+        <!-- 상세 내용 -->
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/admin-common.js"></script>
+  <script>
+    // 학원 데이터
+    const academies = [
+      { id: 1, name: '서울디자인학원', owner: '김원장', email: 'seoul@design.com', phone: '02-1234-5678', plan: 'pro', status: 'active', instructors: 8, students: 245, usage: 1523, joinDate: '2024-01-15', expiryDate: '2025-01-15', monthlyFee: 99000 },
+      { id: 2, name: '강남코딩스쿨', owner: '이원장', email: 'gangnam@coding.com', phone: '02-2345-6789', plan: 'basic', status: 'trial', instructors: 5, students: 180, usage: 1287, joinDate: '2024-12-01', expiryDate: '2024-12-31', monthlyFee: 0 },
+      { id: 3, name: '인천아트센터', owner: '박원장', email: 'incheon@art.com', phone: '032-345-6789', plan: 'enterprise', status: 'active', instructors: 12, students: 320, usage: 1156, joinDate: '2024-03-20', expiryDate: '2025-03-20', monthlyFee: 199000 },
+      { id: 4, name: '부산코딩학원', owner: '최원장', email: 'busan@coding.com', phone: '051-456-7890', plan: 'pro', status: 'expiring', instructors: 6, students: 156, usage: 982, joinDate: '2024-01-01', expiryDate: '2024-12-25', monthlyFee: 99000 },
+      { id: 5, name: '대전디자인스쿨', owner: '정원장', email: 'daejeon@design.com', phone: '042-567-8901', plan: 'basic', status: 'active', instructors: 4, students: 98, usage: 756, joinDate: '2024-06-10', expiryDate: '2025-06-10', monthlyFee: 49000 },
+      { id: 6, name: '광주IT학원', owner: '한원장', email: 'gwangju@it.com', phone: '062-678-9012', plan: 'pro', status: 'unpaid', instructors: 7, students: 189, usage: 634, joinDate: '2024-02-28', expiryDate: '2024-12-10', monthlyFee: 99000 },
+      { id: 7, name: '대구웹스쿨', owner: '윤원장', email: 'daegu@web.com', phone: '053-789-0123', plan: 'basic', status: 'expired', instructors: 3, students: 67, usage: 0, joinDate: '2024-04-15', expiryDate: '2024-10-15', monthlyFee: 49000 },
+      { id: 8, name: '울산코딩캠프', owner: '임원장', email: 'ulsan@coding.com', phone: '052-890-1234', plan: 'enterprise', status: 'active', instructors: 15, students: 420, usage: 2341, joinDate: '2024-05-01', expiryDate: '2025-05-01', monthlyFee: 199000 },
+    ];
+
+    // 상태 뱃지
+    function getStatusBadge(status) {
+      const badges = {
+        active: '<span class="px-2.5 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">활성</span>',
+        trial: '<span class="px-2.5 py-1 text-xs font-semibold bg-blue-100 text-blue-700 rounded-full">체험중</span>',
+        expiring: '<span class="px-2.5 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">만료예정</span>',
+        unpaid: '<span class="px-2.5 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">미결제</span>',
+        expired: '<span class="px-2.5 py-1 text-xs font-semibold bg-gray-100 text-gray-600 rounded-full">만료됨</span>',
+      };
+      return badges[status] || '';
+    }
+
+    // 플랜 뱃지
+    function getPlanBadge(plan) {
+      const badges = {
+        basic: '<span class="px-2.5 py-1 text-xs font-semibold bg-gray-100 text-gray-700 rounded-lg">Basic</span>',
+        pro: '<span class="px-2.5 py-1 text-xs font-semibold bg-purple-100 text-purple-700 rounded-lg">Pro</span>',
+        enterprise: '<span class="px-2.5 py-1 text-xs font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">Enterprise</span>',
+      };
+      return badges[plan] || '';
+    }
+
+    // 학원 목록 렌더링
+    function renderAcademies(data) {
+      const list = document.getElementById('academyList');
+      if (data.length === 0) {
+        list.innerHTML = '<div class="p-8 text-center text-gray-500">검색 결과가 없습니다.</div>';
+        return;
+      }
+
+      list.innerHTML = data.map(a => `
+        <div class="p-4 hover:bg-gray-50 transition cursor-pointer" onclick="showAcademyDetail(${a.id})">
+          <div class="lg:grid lg:grid-cols-12 lg:gap-4 lg:items-center">
+            <!-- 학원 정보 -->
+            <div class="col-span-3 mb-3 lg:mb-0">
+              <p class="font-semibold text-gray-900">${a.name}</p>
+              <p class="text-sm text-gray-500">${a.owner} · ${a.phone}</p>
+            </div>
+            <!-- 플랜 -->
+            <div class="col-span-2 mb-3 lg:mb-0">
+              ${getPlanBadge(a.plan)}
+              <p class="text-xs text-gray-500 mt-1">${a.monthlyFee > 0 ? formatNumber(a.monthlyFee) + '원/월' : '무료체험'}</p>
+            </div>
+            <!-- 강사/학생 -->
+            <div class="col-span-2 mb-3 lg:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1">
+                  <i data-lucide="users" class="w-4 h-4 text-purple-500"></i>
+                  <span class="text-sm font-medium text-gray-700">${a.instructors}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <i data-lucide="graduation-cap" class="w-4 h-4 text-blue-500"></i>
+                  <span class="text-sm font-medium text-gray-700">${a.students}</span>
+                </div>
+              </div>
+            </div>
+            <!-- 이번 달 이용 -->
+            <div class="col-span-2 mb-3 lg:mb-0">
+              <p class="font-semibold text-gray-900">${formatNumber(a.usage)}</p>
+              <p class="text-xs text-gray-500">이용 횟수</p>
+            </div>
+            <!-- 상태 -->
+            <div class="col-span-2 mb-3 lg:mb-0">
+              ${getStatusBadge(a.status)}
+              <p class="text-xs text-gray-500 mt-1">만료: ${a.expiryDate}</p>
+            </div>
+            <!-- 액션 -->
+            <div class="col-span-1 flex justify-end">
+              <button class="p-2 hover:bg-gray-200 rounded-lg transition">
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // 검색
+    function searchAcademies() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = academies.filter(a =>
+        a.name.toLowerCase().includes(query) ||
+        a.owner.toLowerCase().includes(query)
+      );
+      renderAcademies(filtered);
+    }
+
+    // 필터링
+    function filterAcademies(status) {
+      document.getElementById('statusFilter').value = status;
+      if (status === 'all') {
+        renderAcademies(academies);
+      } else {
+        renderAcademies(academies.filter(a => a.status === status));
+      }
+    }
+
+    // 플랜 필터
+    function filterByPlan(plan) {
+      if (plan === 'all') {
+        renderAcademies(academies);
+      } else {
+        renderAcademies(academies.filter(a => a.plan === plan));
+      }
+    }
+
+    // 학원 상세 모달
+    function showAcademyDetail(id) {
+      const academy = academies.find(a => a.id === id);
+      if (!academy) return;
+
+      document.getElementById('modalTitle').textContent = academy.name;
+      document.getElementById('modalContent').innerHTML = `
+        <div class="space-y-6">
+          <!-- 기본 정보 -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">기본 정보</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-sm text-gray-500">원장</p>
+                <p class="font-semibold text-gray-900">${academy.owner}</p>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-sm text-gray-500">연락처</p>
+                <p class="font-semibold text-gray-900">${academy.phone}</p>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-sm text-gray-500">이메일</p>
+                <p class="font-semibold text-gray-900">${academy.email}</p>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-sm text-gray-500">가입일</p>
+                <p class="font-semibold text-gray-900">${academy.joinDate}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 구독 정보 -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">구독 정보</h3>
+            <div class="bg-gray-50 rounded-xl p-4 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  ${getPlanBadge(academy.plan)}
+                  ${getStatusBadge(academy.status)}
+                </div>
+                <p class="text-sm text-gray-600">만료일: ${academy.expiryDate}</p>
+              </div>
+              <p class="text-xl font-bold text-gray-900">${academy.monthlyFee > 0 ? formatNumber(academy.monthlyFee) + '원' : '무료'}<span class="text-sm font-normal text-gray-500">/월</span></p>
+            </div>
+          </div>
+
+          <!-- 사용 현황 -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">사용 현황</h3>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-purple-50 rounded-xl p-4 text-center">
+                <p class="text-2xl font-bold text-purple-600">${academy.instructors}</p>
+                <p class="text-sm text-gray-600">강사</p>
+              </div>
+              <div class="bg-blue-50 rounded-xl p-4 text-center">
+                <p class="text-2xl font-bold text-blue-600">${academy.students}</p>
+                <p class="text-sm text-gray-600">학생</p>
+              </div>
+              <div class="bg-green-50 rounded-xl p-4 text-center">
+                <p class="text-2xl font-bold text-green-600">${formatNumber(academy.usage)}</p>
+                <p class="text-sm text-gray-600">이번 달 이용</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="flex gap-3 pt-4 border-t border-gray-100">
+            <button class="flex-1 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition">
+              상세 사용량 보기
+            </button>
+            <button class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition">
+              결제 내역 보기
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('academyModal').classList.remove('hidden');
+      document.getElementById('academyModal').classList.add('flex');
+      lucide.createIcons();
+    }
+
+    // 모달 닫기
+    function closeModal() {
+      document.getElementById('academyModal').classList.add('hidden');
+      document.getElementById('academyModal').classList.remove('flex');
+    }
+
+    // 모달 외부 클릭시 닫기
+    document.getElementById('academyModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAcademies(academies);
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

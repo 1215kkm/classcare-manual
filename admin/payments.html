@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>결제 관리 - ClassCare 슈퍼어드민</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#D53A6B', secondary: '#3B7DD6' },
+            accent: { primary: '#8A38F5', secondary: '#3B67F6' },
+            dark: { primary: '#1B1D21', secondary: '#1A1C22', tertiary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6]">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-dark-primary border-r border-gray-800 transition-all duration-300 z-40 w-64"></aside>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="transition-all duration-300 lg:ml-64">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Title -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">결제 관리</h1>
+          <p class="text-gray-500 mt-1">구독 결제 내역을 확인하고 관리합니다.</p>
+        </div>
+        <button class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition flex items-center gap-2">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          내역 다운로드
+        </button>
+      </div>
+
+      <!-- Revenue Stats -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+              <i data-lucide="wallet" class="w-5 h-5 text-purple-600"></i>
+            </div>
+            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">+18%</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900">2,450만원</p>
+          <p class="text-sm text-gray-500 mt-1">이번 달 매출</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-green-600">42건</p>
+          <p class="text-sm text-gray-500 mt-1">결제 완료</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5 text-yellow-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-yellow-600">5건</p>
+          <p class="text-sm text-gray-500 mt-1">결제 대기</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+              <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-red-600">3건</p>
+          <p class="text-sm text-gray-500 mt-1">미결제/연체</p>
+        </div>
+      </div>
+
+      <!-- Monthly Revenue Chart Placeholder -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-900">월별 매출 현황</h2>
+          <select class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+            <option>2024년</option>
+            <option>2023년</option>
+          </select>
+        </div>
+        <div class="h-48 flex items-end gap-2 justify-between">
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 40%"></div>
+            <span class="text-xs text-gray-500 mt-2">1월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 55%"></div>
+            <span class="text-xs text-gray-500 mt-2">2월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 45%"></div>
+            <span class="text-xs text-gray-500 mt-2">3월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 60%"></div>
+            <span class="text-xs text-gray-500 mt-2">4월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 70%"></div>
+            <span class="text-xs text-gray-500 mt-2">5월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 65%"></div>
+            <span class="text-xs text-gray-500 mt-2">6월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 75%"></div>
+            <span class="text-xs text-gray-500 mt-2">7월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 80%"></div>
+            <span class="text-xs text-gray-500 mt-2">8월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 85%"></div>
+            <span class="text-xs text-gray-500 mt-2">9월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 90%"></div>
+            <span class="text-xs text-gray-500 mt-2">10월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-purple-200 rounded-t-lg" style="height: 95%"></div>
+            <span class="text-xs text-gray-500 mt-2">11월</span>
+          </div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="w-full bg-gradient-to-t from-purple-500 to-purple-400 rounded-t-lg" style="height: 100%"></div>
+            <span class="text-xs text-purple-600 font-semibold mt-2">12월</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm mb-6">
+        <div class="p-4 flex flex-col sm:flex-row gap-4">
+          <div class="flex-1 flex items-center bg-gray-50 rounded-xl px-4 py-2.5 border border-gray-200 focus-within:border-purple-300 focus-within:bg-white transition">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 mr-3"></i>
+            <input type="text" id="searchInput" placeholder="학원명, 결제ID로 검색..." class="bg-transparent border-none outline-none text-sm w-full text-gray-700 placeholder-gray-400">
+          </div>
+          <div class="flex gap-2">
+            <select class="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-purple-300">
+              <option value="all">전체 상태</option>
+              <option value="completed">완료</option>
+              <option value="pending">대기중</option>
+              <option value="failed">실패</option>
+              <option value="overdue">연체</option>
+            </select>
+            <select class="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-purple-300">
+              <option value="all">전체 플랜</option>
+              <option value="basic">Basic</option>
+              <option value="pro">Pro</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment List -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="hidden lg:grid lg:grid-cols-12 gap-4 p-4 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-600">
+          <div class="col-span-1">결제ID</div>
+          <div class="col-span-3">학원</div>
+          <div class="col-span-2">플랜</div>
+          <div class="col-span-2">금액</div>
+          <div class="col-span-2">상태</div>
+          <div class="col-span-2">결제일</div>
+        </div>
+
+        <div id="paymentList" class="divide-y divide-gray-100">
+          <!-- 데이터가 JS로 삽입됨 -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/admin-common.js"></script>
+  <script>
+    // 결제 데이터
+    const payments = [
+      { id: 'PAY-2024001', academy: '서울디자인학원', owner: '김원장', plan: 'pro', period: 'monthly', amount: 99000, status: 'completed', date: '2024-12-15', nextDate: '2025-01-15' },
+      { id: 'PAY-2024002', academy: '강남코딩스쿨', owner: '이원장', plan: 'basic', period: 'monthly', amount: 49000, status: 'pending', date: '2024-12-14', nextDate: '2025-01-14' },
+      { id: 'PAY-2024003', academy: '인천아트센터', owner: '박원장', plan: 'enterprise', period: 'yearly', amount: 1990000, status: 'completed', date: '2024-12-10', nextDate: '2025-12-10' },
+      { id: 'PAY-2024004', academy: '부산코딩학원', owner: '최원장', plan: 'pro', period: 'monthly', amount: 99000, status: 'overdue', date: '2024-12-01', nextDate: '2024-12-01' },
+      { id: 'PAY-2024005', academy: '대전디자인스쿨', owner: '정원장', plan: 'basic', period: 'yearly', amount: 490000, status: 'completed', date: '2024-11-20', nextDate: '2025-11-20' },
+      { id: 'PAY-2024006', academy: '광주IT학원', owner: '한원장', plan: 'pro', period: 'monthly', amount: 99000, status: 'failed', date: '2024-12-10', nextDate: '-' },
+      { id: 'PAY-2024007', academy: '울산코딩캠프', owner: '임원장', plan: 'enterprise', period: 'yearly', amount: 1990000, status: 'completed', date: '2024-10-01', nextDate: '2025-10-01' },
+    ];
+
+    // 상태 뱃지
+    function getStatusBadge(status) {
+      const badges = {
+        completed: '<span class="px-2.5 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i>완료</span>',
+        pending: '<span class="px-2.5 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>대기중</span>',
+        failed: '<span class="px-2.5 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full flex items-center gap-1"><i data-lucide="x" class="w-3 h-3"></i>실패</span>',
+        overdue: '<span class="px-2.5 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i>연체</span>',
+      };
+      return badges[status] || '';
+    }
+
+    // 플랜 뱃지
+    function getPlanBadge(plan) {
+      const badges = {
+        basic: '<span class="px-2 py-0.5 text-xs font-semibold bg-gray-100 text-gray-700 rounded">Basic</span>',
+        pro: '<span class="px-2 py-0.5 text-xs font-semibold bg-purple-100 text-purple-700 rounded">Pro</span>',
+        enterprise: '<span class="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded">Enterprise</span>',
+      };
+      return badges[plan] || '';
+    }
+
+    // 기간 표시
+    function getPeriod(period) {
+      return period === 'yearly' ? '연간' : '월간';
+    }
+
+    // 결제 목록 렌더링
+    function renderPayments(data) {
+      const list = document.getElementById('paymentList');
+      list.innerHTML = data.map(p => `
+        <div class="p-4 hover:bg-gray-50 transition">
+          <div class="lg:grid lg:grid-cols-12 lg:gap-4 lg:items-center">
+            <!-- 결제 ID -->
+            <div class="col-span-1 mb-2 lg:mb-0">
+              <span class="font-mono text-sm text-gray-600">${p.id.split('-')[1]}</span>
+            </div>
+            <!-- 학원 -->
+            <div class="col-span-3 mb-2 lg:mb-0">
+              <p class="font-semibold text-gray-900">${p.academy}</p>
+              <p class="text-sm text-gray-500">${p.owner}</p>
+            </div>
+            <!-- 플랜 -->
+            <div class="col-span-2 mb-2 lg:mb-0">
+              ${getPlanBadge(p.plan)}
+              <span class="text-xs text-gray-500 ml-1">${getPeriod(p.period)}</span>
+            </div>
+            <!-- 금액 -->
+            <div class="col-span-2 mb-2 lg:mb-0">
+              <p class="font-bold text-gray-900">${formatNumber(p.amount)}원</p>
+            </div>
+            <!-- 상태 -->
+            <div class="col-span-2 mb-2 lg:mb-0">
+              ${getStatusBadge(p.status)}
+            </div>
+            <!-- 결제일 -->
+            <div class="col-span-2">
+              <p class="text-sm text-gray-700">${p.date}</p>
+              <p class="text-xs text-gray-500">다음: ${p.nextDate}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', function() {
+      renderPayments(payments);
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

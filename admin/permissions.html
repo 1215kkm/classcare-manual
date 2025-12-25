@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>권한 관리 - ClassCare 슈퍼어드민</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#D53A6B', secondary: '#3B7DD6' },
+            accent: { primary: '#8A38F5', secondary: '#3B67F6' },
+            dark: { primary: '#1B1D21', secondary: '#1A1C22', tertiary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F2F4F6]">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-dark-primary border-r border-gray-800 transition-all duration-300 z-40 w-64"></aside>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="transition-all duration-300 lg:ml-64">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Title -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">권한 관리</h1>
+          <p class="text-gray-500 mt-1">학원, 강사별 기능 사용 권한을 설정합니다.</p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="openTemplateModal()" class="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition flex items-center gap-2">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            권한 템플릿
+          </button>
+          <button onclick="saveAllPermissions()" class="px-4 py-2.5 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 transition flex items-center gap-2">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            전체 저장
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-6 border-b border-gray-200">
+        <button class="tab-btn px-4 py-3 text-sm font-semibold border-b-2 border-purple-600 text-purple-600" data-tab="academies">
+          학원별 권한
+        </button>
+        <button class="tab-btn px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="instructors">
+          강사별 권한
+        </button>
+        <button class="tab-btn px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="groups">
+          그룹 권한
+        </button>
+        <button class="tab-btn px-4 py-3 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="features">
+          기능 목록
+        </button>
+      </div>
+
+      <!-- Tab Content: 학원별 권한 -->
+      <div id="tab-academies" class="tab-content">
+        <!-- Search & Filter -->
+        <div class="flex gap-4 mb-6">
+          <div class="flex-1 relative">
+            <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+            <input type="text" placeholder="학원 검색..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+          </div>
+          <select class="px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+            <option>모든 플랜</option>
+            <option>유료</option>
+            <option>무료 체험</option>
+            <option>로고 커스텀</option>
+          </select>
+        </div>
+
+        <!-- Academy List -->
+        <div class="space-y-4">
+          <!-- Academy 1 -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-gray-100 flex items-center justify-between cursor-pointer" onclick="toggleAcademy('academy-1')">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                  스
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">스마트코딩학원</h3>
+                  <p class="text-sm text-gray-500">강사 12명 · 유료 플랜</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="px-3 py-1 text-xs font-semibold bg-purple-100 text-purple-700 rounded-full">유료</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform" id="academy-1-icon"></i>
+              </div>
+            </div>
+            <div id="academy-1" class="hidden">
+              <div class="p-5 bg-gray-50">
+                <h4 class="text-sm font-semibold text-gray-700 mb-4">기본 권한 설정</h4>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">출석 관리</p>
+                      <p class="text-xs text-gray-500">attendance</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">좌석 배치</p>
+                      <p class="text-xs text-gray-500">seating</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">상담 기록</p>
+                      <p class="text-xs text-gray-500">consultation</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">퀴즈/시험</p>
+                      <p class="text-xs text-gray-500">quiz</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">그리기 도구</p>
+                      <p class="text-xs text-gray-500">drawing</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">온라인 기능</p>
+                      <p class="text-xs text-gray-500">online</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">서류 자동생성</p>
+                      <p class="text-xs text-gray-500">documentGen</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">파일 자동이동</p>
+                      <p class="text-xs text-gray-500">fileAutoMove</p>
+                    </div>
+                  </label>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                  <button class="text-sm text-purple-600 font-medium flex items-center gap-1">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    강사 12명 개별 설정
+                  </button>
+                  <button class="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700">
+                    저장
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academy 2 -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-gray-100 flex items-center justify-between cursor-pointer" onclick="toggleAcademy('academy-2')">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                  미
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">미래코딩교육원</h3>
+                  <p class="text-sm text-gray-500">강사 8명 · 무료 체험</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="px-3 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">체험</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform" id="academy-2-icon"></i>
+              </div>
+            </div>
+            <div id="academy-2" class="hidden">
+              <div class="p-5 bg-gray-50">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4">
+                  <p class="text-sm text-yellow-700">
+                    <strong>무료 체험 중:</strong> 23일 남음 (2025년 1월 15일 만료)
+                  </p>
+                </div>
+                <h4 class="text-sm font-semibold text-gray-700 mb-4">기본 권한 설정</h4>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">출석 관리</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">좌석 배치</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">상담 기록</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">퀴즈/시험</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-200 cursor-pointer hover:border-purple-300">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">그리기 도구</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-gray-100 rounded-xl border border-gray-200 cursor-not-allowed opacity-60">
+                    <input type="checkbox" disabled class="w-5 h-5 text-gray-400 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-500">온라인 기능</p>
+                      <p class="text-xs text-red-500">유료 전용</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-gray-100 rounded-xl border border-gray-200 cursor-not-allowed opacity-60">
+                    <input type="checkbox" disabled class="w-5 h-5 text-gray-400 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-500">서류 자동생성</p>
+                      <p class="text-xs text-red-500">유료 전용</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-gray-100 rounded-xl border border-gray-200 cursor-not-allowed opacity-60">
+                    <input type="checkbox" disabled class="w-5 h-5 text-gray-400 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-500">파일 자동이동</p>
+                      <p class="text-xs text-red-500">유료 전용</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academy 3 -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-gray-100 flex items-center justify-between cursor-pointer" onclick="toggleAcademy('academy-3')">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-gray-800 to-gray-600 rounded-xl flex items-center justify-center overflow-hidden">
+                  <img src="https://via.placeholder.com/48" alt="로고" class="w-full h-full object-cover">
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">엘리트학원</h3>
+                  <p class="text-sm text-gray-500">강사 25명 · 로고 커스텀</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full">커스텀</span>
+                <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform" id="academy-3-icon"></i>
+              </div>
+            </div>
+            <div id="academy-3" class="hidden">
+              <div class="p-5 bg-gray-50">
+                <h4 class="text-sm font-semibold text-gray-700 mb-4">기본 권한 설정 (전체 활성화)</h4>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">출석 관리</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">좌석 배치</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">상담 기록</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">퀴즈/시험</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">그리기 도구</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">온라인 기능</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">서류 자동생성</p>
+                    </div>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-white rounded-xl border border-purple-300 cursor-pointer">
+                    <input type="checkbox" checked class="w-5 h-5 text-purple-600 rounded">
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">파일 자동이동</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: 강사별 권한 -->
+      <div id="tab-instructors" class="tab-content hidden">
+        <!-- Search & Filter -->
+        <div class="flex gap-4 mb-6">
+          <div class="flex-1 relative">
+            <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+            <input type="text" placeholder="강사 이름 또는 이메일 검색..." class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+          </div>
+          <select class="px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+            <option>모든 학원</option>
+            <option>스마트코딩학원</option>
+            <option>미래코딩교육원</option>
+            <option>엘리트학원</option>
+          </select>
+        </div>
+
+        <!-- Instructor List -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">강사</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">학원</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">출석</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">좌석</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">상담</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">퀴즈</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">그리기</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">온라인</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">서류</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">파일이동</th>
+                <th class="text-center px-4 py-4 text-xs font-semibold text-gray-600">상태</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-medium">김</div>
+                    <div>
+                      <p class="font-medium text-gray-900">김선생</p>
+                      <p class="text-xs text-gray-500">kim@smart.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">스마트코딩학원</td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">유료</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-sm font-medium">이</div>
+                    <div>
+                      <p class="font-medium text-gray-900">이강사</p>
+                      <p class="text-xs text-gray-500">lee@smart.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">스마트코딩학원</td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">체험</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-medium">박</div>
+                    <div>
+                      <p class="font-medium text-gray-900">박교사</p>
+                      <p class="text-xs text-gray-500">park@mirae.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">미래코딩교육원</td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" checked class="w-4 h-4 text-purple-600 rounded"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" disabled class="w-4 h-4 text-gray-300 rounded cursor-not-allowed"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" disabled class="w-4 h-4 text-gray-300 rounded cursor-not-allowed"></td>
+                <td class="px-4 py-4 text-center"><input type="checkbox" disabled class="w-4 h-4 text-gray-300 rounded cursor-not-allowed"></td>
+                <td class="px-4 py-4 text-center"><span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">체험</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content: 그룹 권한 -->
+      <div id="tab-groups" class="tab-content hidden">
+        <div class="grid lg:grid-cols-2 gap-6">
+          <!-- Group Templates -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">권한 그룹 템플릿</h3>
+            <div class="space-y-3">
+              <div class="bg-white rounded-xl border border-gray-200 p-4 hover:border-purple-300 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-semibold text-gray-900">기본 체험</h4>
+                  <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">5개 기능</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">출석, 좌석, 상담, 퀴즈, 그리기</p>
+                <div class="flex gap-2">
+                  <button class="text-xs text-purple-600 font-medium">수정</button>
+                  <button class="text-xs text-gray-500">복제</button>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl border border-gray-200 p-4 hover:border-purple-300 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-semibold text-gray-900">유료 전체</h4>
+                  <span class="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">8개 기능</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">모든 기능 활성화</p>
+                <div class="flex gap-2">
+                  <button class="text-xs text-purple-600 font-medium">수정</button>
+                  <button class="text-xs text-gray-500">복제</button>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl border border-gray-200 p-4 hover:border-purple-300 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-semibold text-gray-900">출석만</h4>
+                  <span class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">1개 기능</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">출석 관리만 허용</p>
+                <div class="flex gap-2">
+                  <button class="text-xs text-purple-600 font-medium">수정</button>
+                  <button class="text-xs text-gray-500">복제</button>
+                </div>
+              </div>
+              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-purple-300 hover:text-purple-600 transition flex items-center justify-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                새 그룹 만들기
+              </button>
+            </div>
+          </div>
+
+          <!-- Apply Template -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4">템플릿 일괄 적용</h3>
+            <div class="bg-white rounded-xl border border-gray-200 p-5">
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">적용할 템플릿</label>
+                <select class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+                  <option>기본 체험</option>
+                  <option>유료 전체</option>
+                  <option>출석만</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">적용 대상</label>
+                <select class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-purple-500">
+                  <option>학원 선택...</option>
+                  <option>스마트코딩학원 (전체 강사)</option>
+                  <option>미래코딩교육원 (전체 강사)</option>
+                  <option>엘리트학원 (전체 강사)</option>
+                </select>
+              </div>
+              <button class="w-full py-3 bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-700 transition">
+                템플릿 적용
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content: 기능 목록 -->
+      <div id="tab-features" class="tab-content hidden">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">기능</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">키</th>
+                <th class="text-left px-6 py-4 text-sm font-semibold text-gray-600">설명</th>
+                <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">무료</th>
+                <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">체험</th>
+                <th class="text-center px-6 py-4 text-sm font-semibold text-gray-600">유료</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="bg-green-50">
+                <td class="px-6 py-4 font-medium text-gray-900">파일 전송</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">fileTransfer</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생에게 파일 전송</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+              </tr>
+              <tr class="bg-green-50">
+                <td class="px-6 py-4 font-medium text-gray-900">원격 보기</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">remoteView</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생 화면 원격 보기</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mx-auto"></i></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">출석 관리</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">attendance</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생 출석 체크 및 관리</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-blue-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">좌석 배치</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">seating</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생 좌석 배치 관리</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-blue-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">상담 기록</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">consultation</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생/학부모 상담 기록</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-blue-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">퀴즈/시험</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">quiz</td>
+                <td class="px-6 py-4 text-sm text-gray-600">퀴즈 및 시험 출제</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-blue-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-medium text-gray-900">그리기 도구</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">drawing</td>
+                <td class="px-6 py-4 text-sm text-gray-600">화면 그리기 도구</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-blue-500 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr class="bg-purple-50">
+                <td class="px-6 py-4 font-medium text-gray-900">온라인 기능</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">online</td>
+                <td class="px-6 py-4 text-sm text-gray-600">온라인 수업 기능</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr class="bg-purple-50">
+                <td class="px-6 py-4 font-medium text-gray-900">서류 자동생성</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">documentGen</td>
+                <td class="px-6 py-4 text-sm text-gray-600">피드백/팀작업 문서 생성</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+              <tr class="bg-purple-50">
+                <td class="px-6 py-4 font-medium text-gray-900">자리 이동 시 파일 이동</td>
+                <td class="px-6 py-4 text-sm text-gray-500 font-mono">fileAutoMove</td>
+                <td class="px-6 py-4 text-sm text-gray-600">학생 자리 이동 시 파일 자동 이동</td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="x" class="w-5 h-5 text-gray-300 mx-auto"></i></td>
+                <td class="px-6 py-4 text-center"><i data-lucide="check" class="w-5 h-5 text-purple-500 mx-auto"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Template Modal -->
+  <div id="templateModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[80vh] overflow-auto">
+      <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="text-xl font-bold text-gray-900">권한 템플릿 관리</h2>
+        <button onclick="closeTemplateModal()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <p class="text-gray-500 mb-4">템플릿을 만들어 여러 학원/강사에게 일괄 적용할 수 있습니다.</p>
+        <div class="space-y-3">
+          <div class="p-4 border border-gray-200 rounded-xl">
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">기본 체험</span>
+              <span class="text-sm text-gray-500">기본값</span>
+            </div>
+            <p class="text-sm text-gray-500">출석, 좌석, 상담, 퀴즈, 그리기</p>
+          </div>
+          <div class="p-4 border border-gray-200 rounded-xl">
+            <div class="flex justify-between mb-2">
+              <span class="font-medium">유료 전체</span>
+              <span class="text-sm text-gray-500">기본값</span>
+            </div>
+            <p class="text-sm text-gray-500">모든 기능</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/admin-common.js"></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Update buttons
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('border-purple-600', 'text-purple-600');
+          b.classList.add('border-transparent', 'text-gray-500');
+        });
+        this.classList.remove('border-transparent', 'text-gray-500');
+        this.classList.add('border-purple-600', 'text-purple-600');
+
+        // Update content
+        const tabId = this.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+      });
+    });
+
+    // Toggle academy accordion
+    function toggleAcademy(id) {
+      const content = document.getElementById(id);
+      const icon = document.getElementById(id + '-icon');
+
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Template modal
+    function openTemplateModal() {
+      document.getElementById('templateModal').classList.remove('hidden');
+      document.getElementById('templateModal').classList.add('flex');
+    }
+
+    function closeTemplateModal() {
+      document.getElementById('templateModal').classList.add('hidden');
+      document.getElementById('templateModal').classList.remove('flex');
+    }
+
+    // Save all permissions
+    function saveAllPermissions() {
+      // 실제로는 Firebase에 저장
+      alert('모든 권한 설정이 저장되었습니다.');
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

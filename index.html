@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClassCare - 학원, 강사, 학생을 위한 케어 프로그램</title>
+  <meta name="description" content="디지털디자인 전국1위 강사가 만든 학원 관리 프로그램. 파일전송, 원격보기, 원격제어, 좌석배치, 상담기록 등 수업에 필요한 모든 기능.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { primary: '#8A38F5', secondary: '#D53A6B' },
+            dark: { primary: '#1B1D21', secondary: '#2B2D35' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * { font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    /* Theme CSS Variables - Light (Default) */
+    :root {
+      --primary: #8A38F5;
+      --primary-light: #A855F7;
+      --secondary: #D53A6B;
+      --accent: #EC4899;
+      --primary-rgb: 138, 56, 245;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --badge-bg: #F3E8FF;
+      --badge-text: #7C3AED;
+      --badge-border: #DDD6FE;
+      --btn-light-bg: #F3E8FF;
+      --btn-light-text: #7C3AED;
+      --btn-light-hover: #EDE9FE;
+      --btn-alt-bg: #FCE7F3;
+      --btn-alt-text: #BE185D;
+      --card-shadow: rgba(138, 56, 245, 0.15);
+      --bg-body: #ffffff;
+      --bg-section: #F9FAFB;
+      --bg-card: #ffffff;
+      --bg-nav: rgba(255, 255, 255, 0.9);
+      --text-primary: #111827;
+      --text-secondary: #4B5563;
+      --text-muted: #6B7280;
+      --border-color: #E5E7EB;
+      --card-border: #F3F4F6;
+    }
+
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --primary: #A78BFA;
+      --primary-light: #C4B5FD;
+      --secondary: #F472B6;
+      --accent: #FB7185;
+      --primary-rgb: 167, 139, 250;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --badge-bg: #374151;
+      --badge-text: #C4B5FD;
+      --badge-border: #4B5563;
+      --btn-light-bg: #374151;
+      --btn-light-text: #C4B5FD;
+      --btn-light-hover: #4B5563;
+      --btn-alt-bg: #4B5563;
+      --btn-alt-text: #F9A8D4;
+      --card-shadow: rgba(167, 139, 250, 0.2);
+      --bg-body: #0F172A;
+      --bg-section: #1E293B;
+      --bg-card: #1E293B;
+      --bg-nav: rgba(15, 23, 42, 0.95);
+      --text-primary: #F1F5F9;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --border-color: #334155;
+      --card-border: #334155;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg {
+      background: var(--gradient);
+    }
+    .theme-primary { color: var(--primary); }
+    .theme-primary-bg { background-color: var(--primary); }
+    .theme-badge-bg { background-color: var(--badge-bg); }
+    .theme-badge-text { color: var(--badge-text); }
+    .theme-badge-border { border-color: var(--badge-border); }
+    .theme-btn-light { background-color: var(--btn-light-bg); color: var(--btn-light-text); }
+    .theme-btn-light:hover { background-color: var(--btn-light-hover); }
+    .theme-btn-alt { background-color: var(--btn-alt-bg); color: var(--btn-alt-text); }
+    .theme-bg-section { background-color: var(--bg-section); }
+    .theme-bg-card { background-color: var(--bg-card); }
+    .theme-text-primary { color: var(--text-primary); }
+    .theme-text-secondary { color: var(--text-secondary); }
+    .theme-text-muted { color: var(--text-muted); }
+    .theme-border { border-color: var(--border-color); }
+    .theme-card-border { border-color: var(--card-border); }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px var(--card-shadow);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Theme Switcher */
+    .theme-switcher {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg-card);
+      padding: 14px 12px;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      border: 2px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .theme-switcher-title {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .theme-btn.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 0 3px var(--primary), 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .theme-light {
+      background: linear-gradient(135deg, #8A38F5 0%, #D53A6B 100%);
+    }
+    .theme-dark {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      border: 2px solid #475569;
+    }
+
+    @media (max-width: 768px) {
+      .theme-switcher {
+        right: 10px;
+        padding: 8px 6px;
+        border-radius: 14px;
+        gap: 4px;
+      }
+      .theme-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+      }
+      .theme-btn.active::after {
+        font-size: 10px;
+      }
+      .theme-switcher-title {
+        display: none;
+      }
+    }
+
+    /* YouTube Modal */
+    .video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .video-modal.active {
+      display: flex;
+    }
+    .video-modal-content {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.2s;
+    }
+    .video-modal-close:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .play-button {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 0, 0, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .play-button:hover {
+      transform: scale(1.1);
+      background: rgba(255, 0, 0, 1);
+    }
+    .play-button i {
+      color: white;
+      margin-left: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Switcher (Fixed Position) -->
+  <div class="theme-switcher" id="themeSwitcher">
+    <div class="theme-switcher-title">테마</div>
+    <button class="theme-btn theme-light active" data-theme="light" title="라이트 모드">
+      <i data-lucide="sun" class="w-4 h-4" style="color: white;"></i>
+    </button>
+    <button class="theme-btn theme-dark" data-theme="dark" title="다크 모드">
+      <i data-lucide="moon" class="w-4 h-4" style="color: white;"></i>
+    </button>
+  </div>
+
+  <!-- Video Modal -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <button class="video-modal-close" onclick="closeVideoModal()">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 backdrop-blur-lg z-50 border-b" style="background-color: var(--bg-nav); border-color: var(--border-color);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <a href="#" class="flex items-center space-x-3">
+          <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center shadow-lg">
+            <span class="text-white font-bold text-xl">C</span>
+          </div>
+          <span class="text-xl font-bold" style="color: var(--text-primary);">ClassCare</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="#features" class="font-medium transition" style="color: var(--text-secondary);">기능</a>
+          <a href="#benefits" class="font-medium transition" style="color: var(--text-secondary);">효과</a>
+          <a href="#pricing" class="font-medium transition" style="color: var(--text-secondary);">요금</a>
+          <div class="flex items-center gap-2 pl-4 border-l" style="border-color: var(--border-color);">
+            <a href="#download" class="flex items-center gap-1.5 theme-btn-light px-4 py-2 rounded-xl font-semibold transition text-sm">
+              <i data-lucide="monitor" class="w-4 h-4"></i>
+              강사앱
+            </a>
+            <a href="#download" class="flex items-center gap-1.5 theme-btn-alt px-4 py-2 rounded-xl font-semibold transition text-sm">
+              <i data-lucide="smartphone" class="w-4 h-4"></i>
+              학생앱
+            </a>
+            <a href="admin/login.html" class="flex items-center gap-1.5 gradient-bg text-white px-4 py-2 rounded-xl font-semibold transition text-sm hover:opacity-90">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              로그인
+            </a>
+          </div>
+        </div>
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg" style="color: var(--text-primary);">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden px-4 py-4 space-y-3 border-t" style="background-color: var(--bg-card); border-color: var(--border-color);">
+      <a href="#features" class="block py-2 font-medium" style="color: var(--text-secondary);">기능</a>
+      <a href="#benefits" class="block py-2 font-medium" style="color: var(--text-secondary);">효과</a>
+      <a href="#pricing" class="block py-2 font-medium" style="color: var(--text-secondary);">요금</a>
+      <div class="flex flex-col gap-2 pt-2 border-t" style="border-color: var(--border-color);">
+        <a href="#download" class="flex items-center justify-center gap-2 theme-btn-light px-4 py-3 rounded-xl font-semibold">
+          <i data-lucide="monitor" class="w-4 h-4"></i>
+          강사앱 다운로드
+        </a>
+        <a href="#download" class="flex items-center justify-center gap-2 theme-btn-alt px-4 py-3 rounded-xl font-semibold">
+          <i data-lucide="smartphone" class="w-4 h-4"></i>
+          학생앱 다운로드
+        </a>
+        <a href="admin/login.html" class="flex items-center justify-center gap-2 gradient-bg text-white px-4 py-3 rounded-xl font-semibold">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          로그인
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-4xl mx-auto">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 theme-badge-bg border theme-badge-border rounded-full px-4 py-2 mb-6 sm:mb-8">
+          <span class="text-2xl">🏆</span>
+          <span class="theme-badge-text font-semibold text-sm sm:text-base">디지털디자인 전국1위 강사가 만든</span>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight mb-4 sm:mb-6">
+          <span class="gradient-text">학원, 강사, 학생</span>을 위한<br>
+          <span style="color: var(--text-primary);">올인원 케어 프로그램</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg sm:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed" style="color: var(--text-secondary);">
+          10년 이상의 현장 강의 경험에서 직접 느낀 불편함을<br class="hidden sm:block">
+          해결하기 위해 만들었습니다.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 sm:mb-16">
+          <a href="#contact" class="gradient-bg text-white px-8 py-4 rounded-2xl font-bold text-lg hover:opacity-90 transition shadow-xl flex items-center justify-center gap-2" style="box-shadow: 0 10px 25px -5px rgba(var(--primary-rgb), 0.4);">
+            <i data-lucide="rocket" class="w-5 h-5"></i>
+            3개월 무료체험 시작
+          </a>
+          <a href="#features" class="px-8 py-4 rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2" style="background-color: var(--bg-section); color: var(--text-primary);">
+            <i data-lucide="play-circle" class="w-5 h-5"></i>
+            기능 둘러보기
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4 sm:gap-8 max-w-lg mx-auto mb-12">
+          <div class="text-center">
+            <p class="text-2xl sm:text-4xl font-black gradient-text">10+</p>
+            <p class="text-sm sm:text-base font-medium mt-1" style="color: var(--text-muted);">핵심 기능</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl sm:text-4xl font-black gradient-text">3개월</p>
+            <p class="text-sm sm:text-base font-medium mt-1" style="color: var(--text-muted);">무료 체험</p>
+          </div>
+          <div class="text-center">
+            <p class="text-2xl sm:text-4xl font-black gradient-text">0원</p>
+            <p class="text-sm sm:text-base font-medium mt-1" style="color: var(--text-muted);">기본 기능</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual (from original index.html) -->
+      <div class="mt-8 relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-transparent z-10 pointer-events-none" style="background: linear-gradient(to top, var(--bg-body) 0%, transparent 20%);"></div>
+        <div class="relative bg-gradient-to-br from-dark-primary to-dark-secondary rounded-2xl shadow-2xl overflow-hidden border border-gray-800 mx-auto max-w-5xl">
+          <div class="p-4">
+            <div class="flex items-center space-x-2 mb-4">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              <span class="text-gray-400 text-sm ml-4">ClassCare - 강사용</span>
+            </div>
+            <div class="grid grid-cols-4 sm:grid-cols-6 gap-3" id="heroGrid"></div>
+          </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute -left-4 top-1/4 rounded-xl shadow-xl p-4 animate-float hidden lg:block" style="background-color: var(--bg-card);">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium" style="color: var(--text-primary);">파일 전송 완료</p>
+              <p class="text-xs" style="color: var(--text-muted);">24명 전원 수신</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -right-4 top-1/3 rounded-xl shadow-xl p-4 animate-float hidden lg:block" style="background-color: var(--bg-card); animation-delay: 1s;">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <i data-lucide="monitor" class="w-5 h-5 text-blue-600"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium" style="color: var(--text-primary);">원격보기 활성</p>
+              <p class="text-xs" style="color: var(--text-muted);">실시간 모니터링</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why ClassCare Section (kept from original) -->
+  <section class="py-20 px-4" style="background-color: var(--bg-section);">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-bold mb-6" style="color: var(--text-primary);">
+            왜 <span class="gradient-text">ClassCare</span>인가요?
+          </h2>
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 theme-badge-bg rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <i data-lucide="zap" class="w-5 h-5 theme-primary"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1" style="color: var(--text-primary);">현장 경험이 만든 솔루션</h3>
+                <p style="color: var(--text-secondary);">디지털디자인 전국1위강사가 실제 교실에서 겪은 불편함을 해결하기 위해 직접 개발했습니다.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 theme-badge-bg rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <i data-lucide="shield" class="w-5 h-5 theme-primary"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1" style="color: var(--text-primary);">안정적인 네트워크</h3>
+                <p style="color: var(--text-secondary);">로컬 네트워크 기반으로 인터넷 없이도 안정적으로 동작합니다.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-10 h-10 theme-badge-bg rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <i data-lucide="users" class="w-5 h-5 theme-primary"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1" style="color: var(--text-primary);">직관적인 인터페이스</h3>
+                <p style="color: var(--text-secondary);">누구나 5분 안에 익힐 수 있는 간단하고 직관적인 UI를 제공합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="gradient-bg rounded-3xl p-1">
+            <div class="rounded-3xl p-8" style="background-color: var(--bg-card);">
+              <div class="text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 gradient-bg rounded-2xl mb-6">
+                  <i data-lucide="star" class="w-10 h-10 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">전국 1위</h3>
+                <p class="mb-6" style="color: var(--text-secondary);">디지털디자인 분야</p>
+                <div class="flex justify-center space-x-1">
+                  <i data-lucide="star" class="w-6 h-6 text-yellow-400 fill-yellow-400"></i>
+                  <i data-lucide="star" class="w-6 h-6 text-yellow-400 fill-yellow-400"></i>
+                  <i data-lucide="star" class="w-6 h-6 text-yellow-400 fill-yellow-400"></i>
+                  <i data-lucide="star" class="w-6 h-6 text-yellow-400 fill-yellow-400"></i>
+                  <i data-lucide="star" class="w-6 h-6 text-yellow-400 fill-yellow-400"></i>
+                </div>
+                <p class="text-sm mt-2" style="color: var(--text-muted);">현장 강사가 직접 만든 솔루션</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="py-16 sm:py-24 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
+        <div class="rounded-3xl p-6 sm:p-8 shadow-sm border fade-in" style="background-color: var(--bg-card); border-color: var(--card-border);">
+          <div class="w-14 h-14 theme-badge-bg rounded-2xl flex items-center justify-center mb-5">
+            <i data-lucide="target" class="w-7 h-7 theme-primary"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">현장 경험 기반</h3>
+          <p class="leading-relaxed" style="color: var(--text-secondary);">10년 이상 강의하며 직접 겪은 불편함을 해결했습니다. 이론이 아닌 실제 필요에서 시작했습니다.</p>
+        </div>
+        <div class="rounded-3xl p-6 sm:p-8 shadow-sm border fade-in" style="background-color: var(--bg-card); border-color: var(--card-border);">
+          <div class="w-14 h-14 theme-btn-alt rounded-2xl flex items-center justify-center mb-5">
+            <i data-lucide="zap" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">즉시 사용 가능</h3>
+          <p class="leading-relaxed" style="color: var(--text-secondary);">복잡한 설정이나 교육 없이 설치 후 바로 사용할 수 있습니다. 직관적인 UI로 누구나 쉽게.</p>
+        </div>
+        <div class="rounded-3xl p-6 sm:p-8 shadow-sm border fade-in" style="background-color: var(--bg-card); border-color: var(--card-border);">
+          <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-5">
+            <i data-lucide="heart" class="w-7 h-7 text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3" style="color: var(--text-primary);">합리적인 가격</h3>
+          <p class="leading-relaxed" style="color: var(--text-secondary);">핵심 기능인 파일전송과 원격보기는 영구 무료. 부담 없이 시작하고 필요할 때 확장하세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-16 sm:py-24 px-4" style="background-color: var(--bg-section);">
+    <div class="max-w-7xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-12 sm:mb-16 fade-in">
+        <span class="inline-block theme-badge-bg theme-badge-text px-4 py-1.5 rounded-full text-sm font-semibold mb-4">FEATURES</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4" style="color: var(--text-primary);">수업에 필요한 <span class="gradient-text">모든 기능</span></h2>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">강사와 학생 모두에게 필요한 기능을 하나의 프로그램에 담았습니다.</p>
+      </div>
+
+      <!-- Free Features -->
+      <div class="mb-16 sm:mb-20">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
+            <i data-lucide="gift" class="w-5 h-5 text-white"></i>
+          </div>
+          <h3 class="text-2xl font-bold" style="color: var(--text-primary);">무료 기능</h3>
+          <span class="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">영구 무료</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- 파일전송 -->
+          <div class="feature-card rounded-3xl p-6 sm:p-8 border transition-all duration-300 fade-in" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="send" class="w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold mb-1" style="color: var(--text-primary);">파일전송</h4>
+                <span class="text-green-600 text-sm font-medium">영구 무료</span>
+              </div>
+            </div>
+            <div class="space-y-3 mb-4">
+              <div class="flex items-start gap-3">
+                <span class="text-green-500 font-bold">목표</span>
+                <p style="color: var(--text-primary);">학생 컴퓨터에 자료 배포하러 돌아다니는 번거로움 해결</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-green-500 font-bold">사용법</span>
+                <p style="color: var(--text-secondary);">드래그앤드롭으로 전체 또는 개별 학생에게 즉시 전송</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 원격보기 -->
+          <div class="feature-card rounded-3xl p-6 sm:p-8 border transition-all duration-300 fade-in" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="monitor" class="w-6 h-6 text-white"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold mb-1" style="color: var(--text-primary);">원격보기</h4>
+                <span class="text-green-600 text-sm font-medium">영구 무료</span>
+              </div>
+            </div>
+            <div class="space-y-3 mb-4">
+              <div class="flex items-start gap-3">
+                <span class="text-green-500 font-bold">목표</span>
+                <p style="color: var(--text-primary);">돌아다니지 않고 학생들의 진행상황 한눈에 확인</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-green-500 font-bold">사용법</span>
+                <p style="color: var(--text-secondary);">썸네일로 전체 학생 화면을 실시간 모니터링</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium Features -->
+      <div>
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+            <i data-lucide="crown" class="w-5 h-5 text-white"></i>
+          </div>
+          <h3 class="text-2xl font-bold" style="color: var(--text-primary);">프리미엄 기능</h3>
+          <span class="theme-badge-bg theme-badge-text text-sm font-semibold px-3 py-1 rounded-full">3개월 무료 체험</span>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 원격제어 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 theme-badge-bg rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="mouse-pointer-2" class="w-6 h-6 theme-primary"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">원격제어</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="theme-primary font-semibold">목표:</span> 학생 자리까지 가지 않고 직접 시연</p>
+              <p style="color: var(--text-secondary);"><span class="theme-primary font-semibold">사용법:</span> 클릭 한 번으로 학생 PC 원격 제어, 실시간 시연 및 수정</p>
+            </div>
+          </div>
+
+          <!-- 좌석배치 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="layout-grid" class="w-6 h-6 text-blue-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">좌석배치</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-blue-600 font-semibold">목표:</span> 매 수업 자리 배정 혼란 해결</p>
+              <p style="color: var(--text-secondary);"><span class="text-blue-600 font-semibold">사용법:</span> 드래그로 자리 배치, 저장된 배치도 불러오기</p>
+            </div>
+          </div>
+
+          <!-- 상담기록 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="clipboard-list" class="w-6 h-6 text-pink-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">상담기록</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-pink-600 font-semibold">목표:</span> 학생별 상담 내용 기억의 한계 극복</p>
+              <p style="color: var(--text-secondary);"><span class="text-pink-600 font-semibold">사용법:</span> 학생별 상담 이력 저장, 검색, 알림 설정</p>
+            </div>
+          </div>
+
+          <!-- 퀴즈/시험 관리 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="file-check" class="w-6 h-6 text-orange-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">퀴즈/시험 관리</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-orange-600 font-semibold">목표:</span> 시험 결과 정리의 번거로움 해소</p>
+              <p style="color: var(--text-secondary);"><span class="text-orange-600 font-semibold">사용법:</span> 시험 결과 입력 및 정리, 학생별 성적 이력 관리</p>
+            </div>
+          </div>
+
+          <!-- 그리기도구 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="pencil" class="w-6 h-6 text-red-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">그리기도구</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-red-600 font-semibold">목표:</span> 화면 공유 중 실시간 설명 필요 해결</p>
+              <p style="color: var(--text-secondary);"><span class="text-red-600 font-semibold">사용법:</span> 학생 화면에 직접 그리기, 하이라이트, 포인터</p>
+            </div>
+          </div>
+
+          <!-- 서류자동생성 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="file-text" class="w-6 h-6 text-teal-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">서류자동생성</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-teal-600 font-semibold">목표:</span> 반복되는 서류 작업 자동화</p>
+              <p style="color: var(--text-secondary);"><span class="text-teal-600 font-semibold">사용법:</span> 성적표, 상담일지 등 템플릿 자동 생성</p>
+            </div>
+          </div>
+
+          <!-- 파일자동이동 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="folder-sync" class="w-6 h-6 text-indigo-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">파일자동이동</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-indigo-600 font-semibold">목표:</span> 자리 변경 시 파일 재전송 불편 해소</p>
+              <p style="color: var(--text-secondary);"><span class="text-indigo-600 font-semibold">사용법:</span> 학생 자리 이동 시 해당 학생 파일 자동 이동</p>
+            </div>
+          </div>
+
+          <!-- 팀메모장 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="sticky-note" class="w-6 h-6 text-yellow-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">팀메모장</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-yellow-600 font-semibold">목표:</span> 강사/학생 간 공유 메모 필요 해결</p>
+              <p style="color: var(--text-secondary);"><span class="text-yellow-600 font-semibold">사용법:</span> 실시간 동기화 공유 메모, 팀별 분류</p>
+            </div>
+          </div>
+
+          <!-- 팀채팅 -->
+          <div class="feature-card rounded-3xl p-6 border shadow-sm transition-all duration-300 fade-in relative" style="background-color: var(--bg-card); border-color: var(--card-border);">
+            <div class="play-button" onclick="openVideoModal('ghrPxnD_OJw')">
+              <i data-lucide="play" class="w-5 h-5"></i>
+            </div>
+            <div class="w-12 h-12 bg-cyan-100 rounded-2xl flex items-center justify-center mb-4">
+              <i data-lucide="messages-square" class="w-6 h-6 text-cyan-600"></i>
+            </div>
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-primary);">팀채팅</h4>
+            <div class="space-y-2 text-sm">
+              <p style="color: var(--text-primary);"><span class="text-cyan-600 font-semibold">목표:</span> 수업 중 빠른 소통 채널 확보</p>
+              <p style="color: var(--text-secondary);"><span class="text-cyan-600 font-semibold">사용법:</span> 전체/그룹/1:1 채팅, 파일 첨부</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Psychological Benefits Section -->
+  <section id="benefits" class="py-16 sm:py-24 px-4">
+    <div class="max-w-7xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-12 sm:mb-16 fade-in">
+        <span class="inline-block theme-badge-bg theme-badge-text px-4 py-1.5 rounded-full text-sm font-semibold mb-4 shadow-sm border" style="border-color: var(--badge-border);">BENEFITS</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4" style="color: var(--text-primary);">마음까지 <span class="gradient-text">케어합니다</span></h2>
+        <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-secondary);">ClassCare는 단순한 도구가 아닙니다.<br>강사와 학생 모두의 심리적 안정을 돕습니다.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 sm:gap-12">
+        <!-- 강사 Benefits -->
+        <div class="rounded-3xl p-8 sm:p-10 shadow-lg fade-in" style="background-color: var(--bg-card); border: 1px solid rgba(var(--primary-rgb), 0.2);">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center shadow-lg">
+              <i data-lucide="user-check" class="w-8 h-8 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" style="color: var(--text-primary);">강사에게</h3>
+              <p class="theme-primary font-medium">Teaching with Peace of Mind</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-10 h-10 theme-badge-bg rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="smile" class="w-5 h-5 theme-primary"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">스트레스 감소</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">반복적인 파일 배포, 자리 돌아다니기에서 해방. 수업 본질에만 집중할 수 있어 에너지 소모가 줄어듭니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 theme-btn-alt rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">통제감 확보</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">모든 학생의 진행상황을 한눈에 파악. "내가 수업을 잘 이끌고 있다"는 자신감이 생깁니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="heart-handshake" class="w-5 h-5 text-green-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">학생과의 유대감 강화</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">상담기록으로 각 학생을 세심하게 기억. 학생들은 "선생님이 나를 기억해주신다"고 느낍니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="trophy" class="w-5 h-5 text-blue-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">전문성 인정</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">체계적인 수업 관리로 학원과 학부모에게 전문 강사로 인정받습니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 학생 Benefits -->
+        <div class="rounded-3xl p-8 sm:p-10 shadow-lg fade-in" style="background-color: var(--bg-card); border: 1px solid var(--card-border);">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-400 rounded-2xl flex items-center justify-center shadow-lg">
+              <i data-lucide="graduation-cap" class="w-8 h-8 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold" style="color: var(--text-primary);">학생에게</h3>
+              <p class="text-pink-600 font-medium">Learning with Confidence</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="clock" class="w-5 h-5 text-orange-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">기다림의 불안 해소</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">파일을 기다리거나 선생님 순서를 기다리지 않아도 됩니다. 수업 흐름에서 소외되지 않습니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="eye" class="w-5 h-5 text-teal-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">관심받는 느낌</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">원격보기와 상담기록으로 "선생님이 나를 지켜봐주고 있다"는 안정감을 느낍니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="hand-helping" class="w-5 h-5 text-indigo-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">도움 요청의 부담 감소</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">팀채팅으로 질문하기 쉬워집니다. 손 들고 "선생님!" 외치는 부끄러움이 사라집니다.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="trending-up" class="w-5 h-5 text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1" style="color: var(--text-primary);">성장 확인</h4>
+                <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">시험 기록과 피드백으로 자신의 발전을 확인. 학습 동기가 높아집니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="mt-12 sm:mt-16 text-center fade-in">
+        <blockquote class="text-xl sm:text-2xl font-medium italic max-w-3xl mx-auto" style="color: var(--text-secondary);">
+          "좋은 도구는 강사와 학생 사이의 거리를 좁히고,<br class="hidden sm:block">
+          서로에 대한 신뢰를 높여줍니다."
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- User Benefits by Role -->
+  <section class="py-16 sm:py-24 px-4" style="background-color: var(--bg-section);">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16 fade-in">
+        <span class="inline-block theme-badge-bg theme-badge-text px-4 py-1.5 rounded-full text-sm font-semibold mb-4">FOR EVERYONE</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4" style="color: var(--text-primary);">모두를 위한 <span class="gradient-text">맞춤 혜택</span></h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
+        <!-- 학원 -->
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-8 text-white shadow-xl fade-in">
+          <div class="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="building-2" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">학원</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>통합 대시보드로 전체 현황 파악</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>강사별 수업 품질 관리</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>학원 결제 시 30% 할인</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>학원 로고 커스터마이징</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 강사 -->
+        <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl p-8 text-white shadow-xl fade-in">
+          <div class="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="user" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">강사</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>수업 효율 극대화</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>행정 업무 최소화</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>학생 케어에 집중</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>전문성 있는 수업 관리</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 학생 -->
+        <div class="bg-gradient-to-br from-orange-400 to-pink-500 rounded-3xl p-8 text-white shadow-xl fade-in">
+          <div class="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">학생</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>빠른 자료 수신</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>실시간 피드백</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>편리한 소통</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>체계적인 학습 관리</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-16 sm:py-24 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16 fade-in">
+        <span class="inline-block theme-badge-bg theme-badge-text px-4 py-1.5 rounded-full text-sm font-semibold mb-4">PRICING</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4" style="color: var(--text-primary);">심플하고 <span class="gradient-text">합리적인 요금</span></h2>
+        <p class="text-lg" style="color: var(--text-secondary);">숨겨진 비용 없이 투명하게</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+        <!-- Free Plan -->
+        <div class="rounded-3xl p-8 border-2 shadow-sm fade-in" style="background-color: var(--bg-card); border-color: var(--border-color);">
+          <div class="text-center mb-6">
+            <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold mb-3">무료</span>
+            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">기본 플랜</h3>
+            <div class="mt-4">
+              <span class="text-5xl font-black" style="color: var(--text-primary);">0</span>
+              <span style="color: var(--text-muted);">원/월</span>
+            </div>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+              <span style="color: var(--text-primary);">파일전송</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+              <span style="color: var(--text-primary);">원격보기</span>
+            </li>
+            <li class="flex items-center gap-3" style="color: var(--text-muted);">
+              <i data-lucide="x-circle" class="w-5 h-5"></i>
+              <span>프리미엄 기능</span>
+            </li>
+          </ul>
+          <a href="#contact" class="block w-full py-3 text-center border-2 font-semibold rounded-xl transition" style="border-color: var(--border-color); color: var(--text-primary);">
+            시작하기
+          </a>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="gradient-bg rounded-3xl p-8 text-white shadow-2xl transform md:-translate-y-4 fade-in relative overflow-hidden">
+          <div class="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold">
+            인기
+          </div>
+          <div class="text-center mb-6">
+            <span class="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-3">프리미엄</span>
+            <h3 class="text-2xl font-bold">강사 플랜</h3>
+            <div class="mt-4">
+              <span class="text-5xl font-black">5,000</span>
+              <span class="opacity-70">원/월</span>
+            </div>
+            <p class="opacity-70 text-sm mt-2">강사 1인 기준</p>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>기본 플랜 전체 포함</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>모든 프리미엄 기능</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>3개월 무료 체험</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>이메일 지원</span>
+            </li>
+          </ul>
+          <a href="#contact" class="block w-full py-3 text-center bg-white font-bold rounded-xl transition" style="color: var(--primary);">
+            무료체험 시작
+          </a>
+        </div>
+
+        <!-- Academy Plan -->
+        <div class="rounded-3xl p-8 shadow-sm fade-in" style="background-color: var(--bg-card); border: 2px solid rgba(var(--primary-rgb), 0.3);">
+          <div class="text-center mb-6">
+            <span class="inline-block theme-badge-bg theme-badge-text px-3 py-1 rounded-full text-sm font-semibold mb-3">학원 전용</span>
+            <h3 class="text-2xl font-bold" style="color: var(--text-primary);">학원 플랜</h3>
+            <div class="mt-4">
+              <span class="text-5xl font-black" style="color: var(--text-primary);">3,500</span>
+              <span style="color: var(--text-muted);">원/월</span>
+            </div>
+            <p class="text-green-600 text-sm mt-2 font-semibold">30% 할인 적용</p>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 theme-primary"></i>
+              <span style="color: var(--text-primary);">프리미엄 전체 포함</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 theme-primary"></i>
+              <span style="color: var(--text-primary);">학원 통합 관리</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 theme-primary"></i>
+              <span style="color: var(--text-primary);">우선 지원</span>
+            </li>
+          </ul>
+          <a href="#contact" class="block w-full py-3 text-center font-semibold rounded-xl theme-btn-light transition">
+            문의하기
+          </a>
+        </div>
+      </div>
+
+      <!-- Logo Option -->
+      <div class="mt-12 text-center fade-in">
+        <div class="inline-flex items-center gap-3 rounded-2xl px-6 py-4 shadow-sm border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+          <i data-lucide="palette" class="w-6 h-6 theme-primary"></i>
+          <span class="font-medium" style="color: var(--text-primary);">학원 로고 커스터마이징:</span>
+          <span class="font-bold theme-primary">월 30,000원</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section id="download" class="py-16 sm:py-24 px-4" style="background-color: var(--bg-section);">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16 fade-in">
+        <span class="inline-block theme-badge-bg theme-badge-text px-4 py-1.5 rounded-full text-sm font-semibold mb-4">DOWNLOAD</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4" style="color: var(--text-primary);">앱 <span class="gradient-text">다운로드</span></h2>
+        <p class="text-lg" style="color: var(--text-secondary);">강사용과 학생용 앱을 각각 다운로드하세요</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+        <!-- 강사앱 -->
+        <div class="gradient-bg rounded-3xl p-8 text-white shadow-xl fade-in">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+              <i data-lucide="monitor" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">강사앱</h3>
+              <p class="text-white/70">Teacher's App</p>
+            </div>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-white/90">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>수업 관리 및 학생 모니터링</span>
+            </li>
+            <li class="flex items-center gap-3 text-white/90">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>파일 전송 및 원격 제어</span>
+            </li>
+            <li class="flex items-center gap-3 text-white/90">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>상담기록 및 성적 관리</span>
+            </li>
+          </ul>
+          <div class="flex gap-3">
+            <a href="#" class="flex-1 bg-white theme-badge-text px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition flex items-center justify-center gap-2">
+              <i data-lucide="monitor" class="w-5 h-5"></i>
+              Windows
+            </a>
+            <a href="#" class="flex-1 bg-white/20 backdrop-blur text-white px-6 py-3 rounded-xl font-bold hover:bg-white/30 transition border border-white/30 flex items-center justify-center gap-2">
+              <i data-lucide="apple" class="w-5 h-5"></i>
+              macOS
+            </a>
+          </div>
+        </div>
+
+        <!-- 학생앱 -->
+        <div class="bg-gradient-to-br from-pink-500 to-orange-400 rounded-3xl p-8 text-white shadow-xl fade-in">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+              <i data-lucide="smartphone" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">학생앱</h3>
+              <p class="text-pink-100">Student's App</p>
+            </div>
+          </div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-pink-100">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>파일 수신 및 과제 제출</span>
+            </li>
+            <li class="flex items-center gap-3 text-pink-100">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>팀채팅 및 팀메모장</span>
+            </li>
+            <li class="flex items-center gap-3 text-pink-100">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span>수업 피드백 확인</span>
+            </li>
+          </ul>
+          <div class="flex gap-3">
+            <a href="#" class="flex-1 bg-white text-pink-600 px-6 py-3 rounded-xl font-bold hover:bg-pink-50 transition flex items-center justify-center gap-2">
+              <i data-lucide="monitor" class="w-5 h-5"></i>
+              Windows
+            </a>
+            <a href="#" class="flex-1 bg-white/20 backdrop-blur text-white px-6 py-3 rounded-xl font-bold hover:bg-white/30 transition border border-white/30 flex items-center justify-center gap-2">
+              <i data-lucide="apple" class="w-5 h-5"></i>
+              macOS
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="contact" class="py-16 sm:py-24 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="gradient-bg rounded-3xl p-8 sm:p-12 text-center text-white shadow-2xl fade-in">
+        <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="mail" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4">궁금한 점이 있으신가요?</h2>
+        <p class="text-purple-100 text-lg mb-8 max-w-xl mx-auto">
+          도입 상담, 기능 문의, 커스터마이징 요청 등<br>
+          무엇이든 편하게 연락주세요.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="mailto:contact@classcare.kr" class="bg-white text-purple-700 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-purple-50 transition shadow-xl flex items-center justify-center gap-2">
+            <i data-lucide="mail" class="w-5 h-5"></i>
+            이메일 문의
+          </a>
+          <a href="tel:010-0000-0000" class="bg-white/20 backdrop-blur text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/30 transition border border-white/30 flex items-center justify-center gap-2">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+            전화 상담
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark-primary text-gray-400 py-12 sm:py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- Brand -->
+        <div class="sm:col-span-2 lg:col-span-1">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+              <span class="text-white font-bold text-xl">C</span>
+            </div>
+            <span class="text-xl font-bold text-white">ClassCare</span>
+          </div>
+          <p class="text-sm leading-relaxed mb-4">
+            디지털디자인 전국1위 강사가 만든<br>
+            학원, 강사, 학생을 위한 케어 프로그램
+          </p>
+        </div>
+
+        <!-- Links -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">제품</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#features" class="hover:text-white transition">기능 소개</a></li>
+            <li><a href="#pricing" class="hover:text-white transition">요금제</a></li>
+            <li><a href="#" class="hover:text-white transition">업데이트 노트</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-semibold mb-4">지원</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition">사용 가이드</a></li>
+            <li><a href="#" class="hover:text-white transition">자주 묻는 질문</a></li>
+            <li><a href="#contact" class="hover:text-white transition">문의하기</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-semibold mb-4">법적 고지</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition">이용약관</a></li>
+            <li><a href="#" class="hover:text-white transition">개인정보처리방침</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom -->
+      <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm">&copy; 2024 ClassCare. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition">
+            <i data-lucide="youtube" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Theme Switching
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    const savedTheme = localStorage.getItem('classcare-theme') || 'light';
+
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+
+      themeButtons.forEach(b => b.classList.remove('active'));
+      const activeBtn = document.querySelector(`.theme-btn[data-theme="${theme}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    applyTheme(savedTheme);
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const theme = btn.dataset.theme;
+        applyTheme(theme);
+        localStorage.setItem('classcare-theme', theme);
+      });
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Hero Grid generation
+    const heroGrid = document.getElementById('heroGrid');
+    for (let i = 0; i < 12; i++) {
+      heroGrid.innerHTML += `
+        <div class="aspect-video bg-dark-tertiary rounded-lg border border-[#4550C8]/30 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+            <span class="text-xs text-gray-400">${i + 1}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Fade in animation on scroll
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Video Modal Functions
+    function openVideoModal(videoId) {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('videoFrame');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('videoFrame');
+      iframe.src = '';
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('videoModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeVideoModal();
+      }
+    });
+
+    // Close modal on ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeVideoModal();
+      }
+    });
+
+    // Re-initialize icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
